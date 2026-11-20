@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.6.0
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.lock pytest ruff pip-audit
+      - name: Compile Python modules
+        run: python -m compileall -q .
+      - name: Run tests
+        run: python -m unittest discover -v
+      - name: Lint
+        run: ruff check .
+      - name: Audit dependencies
+        run: pip-audit -r requirements.lock
+      - name: Check for accidentally tracked secrets
+        shell: bash
+        run: |
+          if git ls-files | grep -E '(^|/)(\.env|.*Credentials\.json|credentials/)' ; then
+            echo "Tracked secret-like file detected"
+            exit 1
+          fi
