@@ -33,7 +33,7 @@ jobs:
           python-version: "3.12"
 
       - name: Restore monitor state
-        uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.2.4
+        uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
           path: output/monitor_state.json
           key: pharma-rfp-monitor-state-${{ github.ref_name }}-${{ github.run_id }}
@@ -211,7 +211,7 @@ jobs:
       # 10. Persist state in the Actions cache, not in the production branch.
       - name: Save monitor state
         if: success() && hashFiles('output/monitor_state.json') != ''
-        uses: actions/cache/save@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.2.4
+        uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
           path: output/monitor_state.json
           key: pharma-rfp-monitor-state-${{ github.ref_name }}-${{ github.run_id }}
