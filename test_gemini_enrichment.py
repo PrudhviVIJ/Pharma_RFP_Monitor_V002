@@ -13,7 +13,7 @@ from gemini_enrichment import (
     save_discovered,
 )
 from quality_gate import detect_login_only_page, verify_opportunity
-from main import deadline_is_expired, send_email_alert
+from main import build_email_alert_rows, deadline_is_expired, send_email_alert
 from report_csv import read_records, write_records
 from opportunity_report import render_markdown
 
@@ -163,6 +163,33 @@ class GeminiEnrichmentTests(unittest.TestCase):
             "ALERT_TO": "",
         }, clear=False):
             self.assertIsNone(send_email_alert([{"company": "Example"}]))
+
+    def test_email_rows_split_flattened_table_evidence_and_use_specialty(self):
+        rows = build_email_alert_rows([{
+            "company": "BMS",
+            "source_url": "https://example.com/rfp",
+            "final_url": "https://example.com/rfp",
+            "application_url": "",
+            "opportunity_type": "RFP",
+            "opportunity_title": "Request for education",
+            "email_eligible": "Yes",
+            "email_block_reason": "",
+            "access_issue": "",
+            "deadline_text": "January 18, 2027",
+            "deadline_date": "2027-01-18",
+            "evidence_quote": (
+                "RFP Code RFE-27-IM-101; Area of Interest Pulmonary Fibrosis; "
+                "LOR Due Date January 18, 2027"
+            ),
+            "new_evidence": [],
+            "therapeutic_areas": "",
+            "focus": "",
+            "topic_terms": [],
+        }])
+        self.assertEqual(len(rows), 1)
+        self.assertIn("Pulmonary Fibrosis", rows[0][2])
+        self.assertIn("pulmonary fibrosis", rows[0][5].casefold())
+        self.assertNotIn("**", rows[0][2])
 
     def test_deadlines_older_than_yesterday_are_expired(self):
         from datetime import date
