@@ -5,6 +5,12 @@ on:
     - cron: "0 20 * * *"
       timezone: "Asia/Kolkata"
   workflow_dispatch:
+    inputs:
+      reset_database:
+        description: "Clear the project PostgreSQL tables before this run"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -50,6 +56,62 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
+
+      - name: Reset project database
+        if: github.event_name == 'workflow_dispatch' && inputs.reset_database == true
+        env:
+          POSTGRES_DSN: ${{ secrets.POSTGRES_DSN }}
+        run: |
+          if [ -z "$POSTGRES_DSN" ]; then
+            echo "::error::POSTGRES_DSN secret is missing"
+            exit 1
+          fi
+          python - <<'PY'
+          import os
+          import psycopg
+
+          dsn = os.environ["POSTGRES_DSN"]
+          options = {} if any(host in dsn.lower() for host in ("localhost", "127.0.0.1", "::1")) else {"sslmode": "require"}
+          with psycopg.connect(dsn, **options) as connection:
+              with connection.cursor() as cursor:
+                  cursor.execute("""
+                      CREATE TABLE IF NOT EXISTS rfp_monitor_runs (
+                          run_id TEXT PRIMARY KEY,
+                          checked_at TIMESTAMPTZ NOT NULL,
+                          status TEXT NOT NULL,
+                          records INTEGER NOT NULL DEFAULT 0,
+                          failed_records INTEGER NOT NULL DEFAULT 0,
+                          flagged_records INTEGER NOT NULL DEFAULT 0,
+                          alerts INTEGER NOT NULL DEFAULT 0
+                      )
+                  """)
+                  cursor.execute("""
+                      CREATE TABLE IF NOT EXISTS rfp_opportunities (
+                          opportunity_key TEXT PRIMARY KEY,
+                          company TEXT NOT NULL,
+                          source_url TEXT NOT NULL,
+                          last_run_id TEXT NOT NULL REFERENCES rfp_monitor_runs(run_id),
+                          checked_at TIMESTAMPTZ NOT NULL,
+                          is_flagged BOOLEAN NOT NULL DEFAULT FALSE,
+                          alert_sent BOOLEAN NOT NULL DEFAULT FALSE,
+                          data JSONB NOT NULL
+                      )
+                  """)
+                  cursor.execute("""
+                      CREATE TABLE IF NOT EXISTS rfp_monitor_output_files (
+                          run_id TEXT NOT NULL REFERENCES rfp_monitor_runs(run_id) ON DELETE CASCADE,
+                          relative_path TEXT NOT NULL,
+                          mime_type TEXT NOT NULL DEFAULT 'application/octet-stream',
+                          size_bytes BIGINT NOT NULL,
+                          sha256 TEXT NOT NULL,
+                          content BYTEA NOT NULL,
+                          stored_at TIMESTAMPTZ NOT NULL,
+                          PRIMARY KEY (run_id, relative_path)
+                      )
+                  """)
+                  cursor.execute("TRUNCATE TABLE rfp_monitor_output_files, rfp_opportunities, rfp_monitor_runs RESTART IDENTITY CASCADE")
+          print("Cleared project PostgreSQL tables.")
+          PY
 
       # 4. Install the browser required by Playwright
       - name: Install Playwright Chromium
