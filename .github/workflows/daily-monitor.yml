@@ -66,6 +66,7 @@ jobs:
             echo "::error::POSTGRES_DSN secret is missing"
             exit 1
           fi
+          python -m pip install "psycopg[binary]==3.2.10"
           python - <<'PY'
           import os
           import psycopg
