@@ -194,7 +194,7 @@ jobs:
 
           PYTHONUNBUFFERED: "1"
         run: |
-          python main.py
+          python main.py --discover-gemini
 
       # 9. Verify generated outputs
       - name: Verify monitor outputs
