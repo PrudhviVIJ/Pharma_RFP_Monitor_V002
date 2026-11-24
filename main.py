@@ -75,9 +75,10 @@ REPORT_COLUMNS = [
 ]
 DAILY_RUN_LOG_COLUMNS = [
     "run_date", "run_id", "checked_at", "company", "source_url", "final_url",
+    "discovery_stage", "discovery_method",
     "page_title", "opportunity_type", "opportunity_title", "opportunity_status",
     "target_topics", "deadline_date", "deadline_text", "change_type", "finding_status",
-    "finding_reason", "alert_status", "alert_reason", "alert_sent_at", "email_configured",
+    "finding_reason", "alert_candidate", "alert_status", "alert_reason", "alert_sent_at", "email_configured",
     "email_attempted", "http_status", "extraction_method", "evidence", "error",
 ]
 
@@ -770,9 +771,14 @@ def save_state(state):
     atomic_write_json(STATE_FILE, state)
 
 def append_daily_run_log(rows):
-    """Append findings to the CSV for the monitor's local calendar day."""
+    """Append every finding and alert decision to that day's audit CSV.
+
+    The human-readable run_date uses DD/MM/YY. Windows does not allow '/' in a
+    filename, so the filename uses the equivalent safe form DD-MM-YY.
+    """
+    DAILY_RUN_LOG_DIR.mkdir(parents=True, exist_ok=True)
     if not rows:
-        return
+        return None
     run_date = str(rows[0].get("run_date", ""))
     try:
         day = datetime.strptime(run_date, "%d/%m/%y")
@@ -780,8 +786,23 @@ def append_daily_run_log(rows):
         day = datetime.now(MONITOR_TIMEZONE)
     # Slashes are invalid in Windows filenames; the CSV field remains DD/MM/YY.
     daily_log = DAILY_RUN_LOG_DIR / f"{day.strftime('%d-%m-%y')}.csv"
-    DAILY_RUN_LOG_DIR.mkdir(parents=True, exist_ok=True)
     exists = daily_log.exists() and daily_log.stat().st_size > 0
+    if exists:
+        # Migrate a log created by an older version before appending. This
+        # keeps one stable schema per daily CSV while preserving old findings.
+        with daily_log.open("r", newline="", encoding="utf-8-sig") as handle:
+            reader = csv.DictReader(handle)
+            if reader.fieldnames != DAILY_RUN_LOG_COLUMNS:
+                previous_rows = list(reader)
+                temporary = daily_log.with_suffix(".csv.tmp")
+                with temporary.open("w", newline="", encoding="utf-8-sig") as migrated:
+                    writer = csv.DictWriter(migrated, fieldnames=DAILY_RUN_LOG_COLUMNS)
+                    writer.writeheader()
+                    for previous in previous_rows:
+                        writer.writerow({field: previous.get(field, "") for field in DAILY_RUN_LOG_COLUMNS})
+                    migrated.flush()
+                    os.fsync(migrated.fileno())
+                os.replace(temporary, daily_log)
     with daily_log.open("a", newline="", encoding="utf-8-sig") as handle:
         writer = csv.DictWriter(handle, fieldnames=DAILY_RUN_LOG_COLUMNS, extrasaction="ignore")
         if not exists:
@@ -823,7 +844,8 @@ def build_daily_run_log_rows(results, alerts, *, args, email_result, email_error
             finding_status = "NO_TARGET_FINDING"
             finding_reason = "No verified target oncology/neurology RFP finding"
 
-        if key in alert_keys and email_sent:
+        alert_candidate = key in alert_keys
+        if alert_candidate and email_sent:
             alert_status, alert_reason = "SENT", "Email delivered successfully"
         elif args.baseline:
             alert_status, alert_reason = "NOT_SENT", "Baseline mode"
@@ -841,17 +863,25 @@ def build_daily_run_log_rows(results, alerts, *, args, email_result, email_error
             alert_status, alert_reason = "NOT_SENT", "Source access issue"
         elif result.get("change_type") == "UNCHANGED" and not args.force_alert:
             alert_status, alert_reason = "NOT_SENT", "No new or changed evidence"
-        elif key in alert_keys and email_error:
+        elif alert_candidate and email_error:
             alert_status, alert_reason = "NOT_SENT", f"Email delivery failed: {email_error}"
-        elif key in alert_keys and email_result is None:
+        elif alert_candidate and email_result is None:
             alert_status, alert_reason = "NOT_SENT", "Email not configured"
+        elif alert_candidate and email_result is False:
+            alert_status, alert_reason = "NOT_SENT", "Email delivery failed"
         else:
             alert_status, alert_reason = "NOT_SENT", "Did not pass final alert filters"
 
+        discovered_from = str(result.get("discovered_from", "")).strip()
+        independent = discovered_from.casefold() in {
+            "gemini_google_search", "search_discovered", "independent_discovery"
+        }
         rows.append({
             "run_date": run_date, "run_id": RUN_ID, "checked_at": checked_at,
             "company": result.get("company", ""), "source_url": result.get("source_url", ""),
             "final_url": result.get("final_url", ""), "page_title": result.get("page_title", ""),
+            "discovery_stage": "INDEPENDENT_DISCOVERY" if independent else "KNOWN_SOURCE",
+            "discovery_method": discovered_from or "workbook_seed",
             "opportunity_type": result.get("opportunity_type", ""),
             "opportunity_title": result.get("opportunity_title", ""),
             "opportunity_status": result.get("opportunity_status", ""),
@@ -860,6 +890,7 @@ def build_daily_run_log_rows(results, alerts, *, args, email_result, email_error
             "deadline_text": result.get("deadline_text", ""),
             "change_type": result.get("change_type", ""),
             "finding_status": finding_status, "finding_reason": finding_reason,
+            "alert_candidate": "Yes" if alert_candidate else "No",
             "alert_status": alert_status, "alert_reason": alert_reason,
             "alert_sent_at": sent_at if key in alert_keys and email_sent else "",
             "email_configured": "Yes" if email_configured else "No",
@@ -1218,6 +1249,9 @@ def main():
     now = datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
     results, alerts = [], []
     text_by_key = {}
+    discovered_candidates_count = 0
+    discovered_verified_count = 0
+    logging.info("Discovery stage 1/2 started: checking %d known workbook/same-site sources.", len(records))
     for i, rec in enumerate(records, start=1):
         logging.info("[%d/%d] Checking %s — %s", i, len(records), rec["company"], rec["url"])
         status, error, final_url, title, text = 0, "", rec["url"], "", ""
@@ -1375,6 +1409,14 @@ def main():
                          cls["priority"], rec["company"], cls["funding_terms"], cls["topic_terms"])
         time.sleep(DELAY_SECONDS)
 
+    known_source_count = len(results)
+    logging.info(
+        "Discovery stage 1/2 completed: checked=%d flagged=%d failed=%d.",
+        known_source_count,
+        sum(bool(result.get("flag")) for result in results),
+        sum(bool(result.get("error") or int(result.get("http_status") or 0) >= 400) for result in results),
+    )
+
     if gemini and (args.discover_gemini or GEMINI_DISCOVERY or GEMINI_REVIEW):
         try:
             updates = gemini.enrich_records(results, text_by_key)
@@ -1441,8 +1483,11 @@ def main():
     # fetched and independently verified before they can become alerts.
     if gemini and (args.discover_gemini or GEMINI_DISCOVERY):
         try:
+            logging.info("Discovery stage 2/2 started: searching for sources outside the known source set.")
             excluded = [record["company"] for record in records]
             discovered = gemini.discover(excluded, max_results=GEMINI_MAX_RESULTS)
+            discovered_candidates_count = len(discovered)
+            logging.info("Independent discovery returned %d candidate source(s).", discovered_candidates_count)
             save_discovered(discovered, GEMINI_DISCOVERED_FILE)
             existing_keys = {
                 (result["company"].casefold(), result["source_url"].casefold())
@@ -1587,12 +1632,13 @@ def main():
                             "topic_terms": result.get("therapeutic_areas", "").split("; ") if result.get("therapeutic_areas") else [],
                         })
                         alerts.append(alert)
+            discovered_verified_count = len(discovered_results)
             logging.info(
-                "Grounded discovery ran after existing-URL review: %d candidate(s), %d verified record(s).",
+                "Discovery stage 2/2 completed: %d candidate(s), %d independently verified record(s).",
                 len(discovered), len(discovered_results),
             )
         except Exception:
-            logging.exception("Post-review Gemini grounded discovery failed; existing URL results retained.")
+            logging.exception("Discovery stage 2/2 failed; known-source results retained.")
 
     alerts = [
         alert for alert in alerts
@@ -1631,6 +1677,9 @@ def main():
         "failed_records": len(failed_results),
         "flagged_records": sum(bool(result.get("flag")) for result in results),
         "alerts": len(alerts),
+        "known_source_records": known_source_count,
+        "independent_discovery_candidates": discovered_candidates_count,
+        "independent_discovery_verified": discovered_verified_count,
     }
     atomic_write_json(HEALTH_FILE, health)
     failure_ratio = len(failed_results) / len(results) if results else 1.0
@@ -1685,11 +1734,23 @@ def main():
         persist_output_files(OUTPUT_DIR, RUN_ID)
     except Exception:
         logging.exception("PostgreSQL output-file persistence failed; local output files remain available.")
-    daily_log = append_daily_run_log(build_daily_run_log_rows(
+    daily_log_rows = build_daily_run_log_rows(
         results, alerts, args=args, email_result=email_result,
         email_error=email_error, email_sent=email_sent,
-    ))
+    )
+    daily_log = append_daily_run_log(daily_log_rows)
     logging.info("Daily run log: %s", daily_log)
+    logging.info(
+        "Run audit summary: known=%d, discovered_candidates=%d, discovered_verified=%d, "
+        "findings=%d, alert_candidates=%d, alerts_sent=%d, alerts_not_sent=%d.",
+        known_source_count,
+        discovered_candidates_count,
+        discovered_verified_count,
+        len(results),
+        sum(1 for row in daily_log_rows if row.get("alert_candidate") == "Yes"),
+        sum(1 for row in daily_log_rows if row.get("alert_status") == "SENT"),
+        sum(1 for row in daily_log_rows if row.get("alert_status") == "NOT_SENT"),
+    )
     logging.info("Finished. Flagged this run: %d; positive-change alerts: %d", sum(r["flag"] for r in results), len(alerts))
     logging.info("Run report: %s", RUN_REPORT)
     logging.info("Current flagged matches: %s", MATCHES_FILE)
