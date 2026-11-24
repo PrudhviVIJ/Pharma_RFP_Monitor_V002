@@ -13,12 +13,48 @@ from gemini_enrichment import (
     save_discovered,
 )
 from quality_gate import detect_login_only_page, verify_opportunity
-from main import build_email_alert_rows, deadline_is_expired, send_email_alert
+from main import (
+    build_email_alert_rows,
+    classify,
+    deadline_is_expired,
+    deadline_is_too_soon,
+    extract_deadline_text,
+    is_target_rfp_record,
+    send_email_alert,
+)
 from report_csv import read_records, write_records
 from opportunity_report import render_markdown
 
 
 class GeminiEnrichmentTests(unittest.TestCase):
+    def test_classification_requires_target_topic_and_rfp_language(self):
+        oncology = classify(
+            "Example Pharma", "https://example.com/oncology-rfp", "",
+            "Request for Proposals for oncology research. Applications are open until January 1, 2027.",
+        )
+        generic = classify(
+            "Example Pharma", "https://example.com/grants", "",
+            "Funding opportunities are available for qualified organizations.",
+        )
+        neurology_grant = classify(
+            "Example Pharma", "https://example.com/neurology", "",
+            "We provide grants for neurology education. Applications are open.",
+        )
+        self.assertTrue(oncology["is_target_rfp"])
+        self.assertTrue(oncology["flag"])
+        self.assertFalse(generic["flag"])
+        self.assertFalse(neurology_grant["flag"])
+
+    def test_target_rfp_record_requires_both_scope_conditions(self):
+        self.assertTrue(is_target_rfp_record({
+            "opportunity_title": "Neurology RFP",
+            "evidence": "Request for proposals for neurology education.",
+        }))
+        self.assertFalse(is_target_rfp_record({
+            "opportunity_title": "General RFP",
+            "evidence": "Request for proposals for diabetes education.",
+        }))
+
     def test_parse_json_code_fence(self):
         self.assertEqual(_parse_json('```json\n{"announcements": []}\n```'), {"announcements": []})
 
@@ -200,6 +236,19 @@ class GeminiEnrichmentTests(unittest.TestCase):
         self.assertFalse(deadline_is_expired({"deadline_text": "November 19, 2026"}, today))
         self.assertFalse(deadline_is_expired({"deadline_text": "November 20, 2026"}, today))
         self.assertFalse(deadline_is_expired({"deadline_text": "No deadline stated"}, today))
+
+    def test_normalizes_malformed_table_dates(self):
+        text = "LOR Due Date January 18,; 2026 - 5PM EST"
+        extracted = extract_deadline_text(text)
+        self.assertIn("January 18, 2026", extracted)
+
+    def test_blocks_deadlines_within_minimum_lead_time(self):
+        from datetime import date
+
+        today = date(2026, 11, 24)
+        self.assertTrue(deadline_is_too_soon({"deadline_text": "November 24, 2026"}, today))
+        self.assertTrue(deadline_is_too_soon({"deadline_text": "December 1, 2026"}, today))
+        self.assertFalse(deadline_is_too_soon({"deadline_text": "December 2, 2026"}, today))
 
     def test_report_write_is_atomic_and_readable(self):
         with TemporaryDirectory() as directory:

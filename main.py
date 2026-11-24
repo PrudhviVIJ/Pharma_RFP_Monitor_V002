@@ -17,6 +17,7 @@ from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
+from zoneinfo import ZoneInfo
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
@@ -65,7 +66,7 @@ REPORT_COLUMNS = [
     "opportunity_status", "status_reason", "opportunity_id", "published_date",
     "published_date_text", "deadline_text", "deadline_date", "eligibility",
     "application_url", "evidence", "evidence_quote", "field_evidence", "funding_terms", "funding_amount",
-    "sponsor", "sponsor_type", "therapeutic_areas", "focus", "geography", "reference_id",
+    "sponsor", "sponsor_type", "therapeutic_areas", "target_topics", "focus", "geography", "reference_id",
     "contact_email", "source_type", "source_authority", "priority", "relevance_score", "change_type",
     "changed_fields", "flag", "gemini_relevance", "gemini_confidence",
     "gemini_summary", "document_status", "confidence_score", "verification_reason",
@@ -88,6 +89,19 @@ TOPIC_TERMS = [
     "movement disorder", "alzheimer's disease", "seizure", "headache",
     "neuromuscular", "neuroimmunology", "motor neuron disease", "amyotrophic lateral sclerosis",
     "spinal muscular atrophy", "huntington's disease", "neuropathy", "cognitive impairment",
+]
+TARGET_TOPIC_TERMS = [
+    "oncology", "cancer", "tumor", "tumour", "hematology", "haematology",
+    "immuno-oncology", "precision oncology", "breast cancer", "lung cancer",
+    "colorectal cancer", "prostate cancer", "pancreatic cancer", "ovarian cancer",
+    "lymphoma", "leukemia", "leukaemia", "multiple myeloma", "solid tumor",
+    "solid tumour", "tumor microenvironment", "car t", "neuroscience", "neurology",
+    "neurologic", "neurological", "parkinson", "migraine", "epilepsy",
+    "multiple sclerosis", "alzheimer", "dementia", "neurodegenerative", "brain",
+    "stroke", "cerebrovascular", "movement disorder", "seizure", "headache",
+    "neuromuscular", "neuroimmunology", "motor neuron disease",
+    "amyotrophic lateral sclerosis", "spinal muscular atrophy", "huntington's disease",
+    "neuropathy", "cognitive impairment",
 ]
 OPEN_TERMS = [
     "now accepting", "accepting applications", "currently accepting",
@@ -119,6 +133,8 @@ GEMINI_REVIEW = os.getenv("GEMINI_REVIEW", "false").lower() in {"1", "true", "ye
 MAX_LINKS_PER_SEED = int(os.getenv("MAX_LINKS_PER_SEED", "20"))
 MAX_DISCOVERED_URLS = int(os.getenv("MAX_DISCOVERED_URLS", "200"))
 MAX_FAILURE_RATIO = float(os.getenv("MAX_FAILURE_RATIO", "0.50"))
+ALERT_MIN_LEAD_DAYS = int(os.getenv("ALERT_MIN_LEAD_DAYS", "7"))
+MONITOR_TIMEZONE = ZoneInfo("Asia/Kolkata")
 HEALTH_FILE = OUTPUT_DIR / "health.json"
 RUN_ID = uuid.uuid4().hex[:12]
 
@@ -497,20 +513,47 @@ def classify(company, url, description, text):
     combined = " ".join([company, url, description, text])
     funding = find_terms(combined, FUNDING_TERMS)
     topics = find_terms(combined, TOPIC_TERMS)
+    target_topics = find_terms(combined, TARGET_TOPIC_TERMS)
+    rfp_terms = find_terms(combined, RFP_TERMS)
     open_signals = find_terms(combined, OPEN_TERMS)
     closed_signals = find_terms(combined, CLOSED_TERMS)
-    # Only flag pages where funding-related wording is present. Topic matches
-    # are separately recorded so reviewers can prioritize relevant opportunities.
+    target_rfp = bool(funding and target_topics and rfp_terms)
     return {
         "funding_terms": funding,
         "topic_terms": topics,
+        "target_topics": target_topics,
+        "rfp_terms": rfp_terms,
         "open_signals": open_signals,
         "closed_signals": closed_signals,
-        "flag": bool(funding),
-        "priority": "HIGH" if funding and topics and open_signals and not closed_signals
-                    else "MEDIUM" if funding and topics
-                    else "REVIEW" if funding else "NONE",
+        "is_target_rfp": target_rfp,
+        "flag": target_rfp,
+        "priority": "HIGH" if target_rfp and open_signals and not closed_signals
+                    else "MEDIUM" if target_rfp
+                    else "NONE",
     }
+
+def opportunity_fingerprint(final_url, application_url, title, deadline_text, evidence_quote, target_topics):
+    """Fingerprint opportunity fields, excluding volatile page-wide navigation text."""
+    payload = json.dumps({
+        "final_url": final_url or "",
+        "application_url": application_url or "",
+        "title": re.sub(r"\s+", " ", title or "").strip(),
+        "deadline": re.sub(r"\s+", " ", deadline_text or "").strip(),
+        "evidence": re.sub(r"\s+", " ", evidence_quote or "").strip(),
+        "target_topics": sorted(target_topics or []),
+    }, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+def is_target_rfp_record(record, update=None):
+    """Require both target-topic evidence and explicit RFP/proposal language."""
+    update = update or {}
+    text = " ".join(str(record.get(field, "")) for field in (
+        "company", "page_title", "opportunity_title", "evidence", "evidence_quote",
+        "focus", "therapeutic_areas", "funding_terms",
+    )) + " " + " ".join(str(update.get(field, "")) for field in (
+        "opportunity_title", "evidence", "evidence_quote", "focus", "therapeutic_areas", "funding_terms",
+    ))
+    return bool(find_terms(text, TARGET_TOPIC_TERMS) and find_terms(text, RFP_TERMS))
 
 def opportunity_evidence(text):
     """Return concise funding-related sentences used for positive-change detection."""
@@ -534,10 +577,17 @@ def opportunity_evidence(text):
 
 def extract_deadline_text(text: str) -> str:
     """Extract a source sentence containing a deadline or due date."""
-    sentences = re.split(r"(?<=[.!?])\s+|\s*[\n]+\s*", text or "")
+    normalized_text = re.sub(
+        r"\b(January|February|March|April|May|June|July|August|September|October|November|December|"
+        r"Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\s+(\d{1,2})\s*[,;:/-]+\s*(\d{4})\b",
+        r"\1 \2, \3",
+        str(text or ""),
+        flags=re.I,
+    )
+    sentences = re.split(r"(?<=[.!?])\s+|\s*[\n]+\s*", normalized_text)
     date_pattern = re.compile(
         r"\b(?:\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|\d{4}[/-]\d{1,2}[/-]\d{1,2}|"
-        r"(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2}(?:st|nd|rd|th)?[,]?\s+\d{4}|"
+        r"(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2}(?:st|nd|rd|th)?\s*[,;]?\s+\d{4}|"
         r"\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{4})\b",
         re.I,
     )
@@ -599,13 +649,20 @@ def _email_specialty(alert, evidence):
 def _parse_deadline_date(value: str):
     """Parse common deadline formats without treating ambiguous text as a date."""
     value = re.sub(r"\s+", " ", str(value or "")).strip()
+    value = re.sub(
+        r"\b(January|February|March|April|May|June|July|August|September|October|November|December|"
+        r"Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\s+(\d{1,2})\s*[,;:/-]+\s*(\d{4})\b",
+        r"\1 \2, \3",
+        value,
+        flags=re.I,
+    )
     value = re.sub(r"(\d{1,2})(st|nd|rd|th)\b", r"\1", value, flags=re.I)
     if not value:
         return None
     candidates = [value]
     candidates.extend(re.findall(
         r"\b(?:\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|\d{4}[/-]\d{1,2}[/-]\d{1,2}|"
-        r"(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2},?\s+\d{4}|"
+        r"(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2}\s*[,;]?\s+\d{4}|"
         r"\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{4})\b",
         value, flags=re.I,
     ))
@@ -624,12 +681,25 @@ def _parse_deadline_date(value: str):
     return None
 
 def deadline_is_expired(alert, today=None):
-    """Return True when a stated deadline is yesterday or earlier."""
-    today = today or datetime.now().astimezone().date()
+    """Return True when a stated deadline was yesterday or earlier."""
+    today = today or datetime.now(MONITOR_TIMEZONE).date()
     deadline = _parse_deadline_date(alert.get("deadline_date", ""))
     if deadline is None:
         deadline = _parse_deadline_date(alert.get("deadline_text", ""))
     return deadline is not None and deadline <= today - timedelta(days=1)
+
+def deadline_days_remaining(alert, today=None):
+    """Return calendar days remaining, or None when no reliable deadline exists."""
+    today = today or datetime.now(MONITOR_TIMEZONE).date()
+    deadline = _parse_deadline_date(alert.get("deadline_date", ""))
+    if deadline is None:
+        deadline = _parse_deadline_date(alert.get("deadline_text", ""))
+    return (deadline - today).days if deadline else None
+
+def deadline_is_too_soon(alert, today=None):
+    """Block alerts expired or within the configured minimum lead time."""
+    days = deadline_days_remaining(alert, today)
+    return days is not None and days <= ALERT_MIN_LEAD_DAYS
 
 def first_email(text: str) -> str:
     match = re.search(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", text or "", re.I)
@@ -650,7 +720,7 @@ def build_email_alert_rows(alerts):
         email_url = alert.get("application_url") or alert.get("final_url") or alert.get("source_url")
         if (
             alert.get("email_eligible") != "Yes"
-            or deadline_is_expired(alert)
+            or deadline_is_too_soon(alert)
             or alert.get("email_block_reason")
             or email_url_block_reason(email_url)
             or alert.get("access_issue")
@@ -1005,11 +1075,17 @@ def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     records = load_input(Path(args.input))
     gemini = None
-    if args.discover_gemini or GEMINI_DISCOVERY or GEMINI_REVIEW:
+    discovery_requested = args.discover_gemini or GEMINI_DISCOVERY
+    review_requested = GEMINI_REVIEW
+    if discovery_requested and not os.getenv("GEMINI_API_KEY", "").strip():
+        raise SystemExit("GEMINI_DISCOVERY requires GEMINI_API_KEY to be configured.")
+    if discovery_requested or review_requested:
         try:
             gemini = GeminiEnricher()
             logging.info("Gemini API key loaded; existing URLs will be reviewed before grounded discovery.")
         except Exception:
+            if discovery_requested:
+                raise
             logging.exception("Gemini setup failed; continuing without Gemini review or grounded discovery.")
             gemini = None
     if args.max_urls:
@@ -1090,17 +1166,14 @@ def main():
         application_url = resolve_application_url_from_page(session, retrieval_url, final_url, page_text=text)
 
         cls = classify(rec["company"], rec["url"], rec["description"], text)
-        fingerprint = hashlib.sha256((final_url + "\n" + application_url + "\n" + text).encode("utf-8", errors="ignore")).hexdigest()
         key = rec["company"].casefold() + "|" + rec["url"].casefold()
         previous = state.get(key, {})
-        is_new_or_changed = previous.get("fingerprint") != fingerprint
         evidence = opportunity_evidence(text)
         source_deadline_text = extract_deadline_text(text)
         source_deadline_date = _parse_deadline_date(source_deadline_text)
         prior_evidence = set(previous.get("opportunity_evidence", []))
         new_evidence = [item for item in evidence if item not in prior_evidence]
-        low_evidence = " ".join(evidence).casefold()
-        is_rfp = any(term in low_evidence for term in RFP_TERMS)
+        is_rfp = bool(cls["rfp_terms"] and cls["target_topics"])
         positive_change = bool(new_evidence) and cls["flag"]
         opportunity_type = "RFP" if is_rfp else "Grant"
         if cls["closed_signals"]:
@@ -1129,6 +1202,7 @@ def main():
             "sponsor": rec["company"],
             "sponsor_type": "pharmaceutical" if not rec.get("discovered_from") else "unknown",
             "therapeutic_areas": "; ".join(cls["topic_terms"]),
+            "target_topics": "; ".join(cls["target_topics"]),
             "focus": rec.get("description", ""),
             "geography": "",
             "reference_id": "",
@@ -1137,23 +1211,32 @@ def main():
             "source_authority": "unverified",
             "priority": cls["priority"],
             "funding_terms": "; ".join(cls["funding_terms"]), "relevance_score": relevance_score,
-            "change_type": "NEW_OR_CHANGED" if is_new_or_changed else "UNCHANGED",
-            "changed_fields": "page_content" if is_new_or_changed else "",
+            "change_type": "",
+            "changed_fields": "",
             "flag": cls["flag"], "gemini_relevance": "", "gemini_confidence": "",
             "gemini_summary": "", "checked_at": now, "error": error,
         }
         result.update(verify_opportunity(rec["url"], final_url, title, text))
         result["access_issue"] = detect_access_issue(text, status)
+        result["is_target_rfp"] = cls["is_target_rfp"]
+        fingerprint = opportunity_fingerprint(
+            final_url, application_url, result.get("opportunity_title", ""),
+            result.get("deadline_text", ""), result.get("evidence_quote", "") or result.get("evidence", ""),
+            cls["target_topics"],
+        )
+        is_new_or_changed = previous.get("fingerprint") != fingerprint
+        result["change_type"] = "NEW_OR_CHANGED" if is_new_or_changed else "UNCHANGED"
+        result["changed_fields"] = "opportunity_fields" if is_new_or_changed else ""
         results.append(result)
         text_by_key[key] = text
         email_evidence = email_evidence_snippets(new_evidence)
-        if cls["flag"] and email_evidence and (positive_change or args.force_alert) and not args.baseline:
+        if cls["is_target_rfp"] and email_evidence and (positive_change or args.force_alert) and not args.baseline:
             alert = dict(result)
             alert.update({
                 "priority": cls["priority"],
                 "change_summary": "New RFP related evidence" if is_rfp else "New grant opportunity evidence",
                 "new_evidence": email_evidence,
-                "topic_terms": cls["topic_terms"],
+                "topic_terms": cls["target_topics"],
             })
             alerts.append(alert)
         if (not error or recovered_with_public_alternative) and status < 400:
@@ -1184,11 +1267,19 @@ def main():
                 if not update:
                     continue
                 merge_enrichment(result, update)
+                if update.get("target_topics"):
+                    result["target_topics"] = "; ".join(
+                        dict.fromkeys(str(value).strip() for value in update["target_topics"] if str(value).strip())
+                    )
+                result["is_target_rfp"] = is_target_rfp_record(result, update)
                 result.update(verify_opportunity(
                     result["source_url"], result.get("final_url", ""),
                     result.get("opportunity_title", ""),
                     text_by_key.get(result["company"].casefold() + "|" + result["source_url"].casefold(), ""),
                 ))
+                reviewed_deadline = _parse_deadline_date(str(result.get("deadline_text", "")))
+                result["deadline_date"] = reviewed_deadline.isoformat() if reviewed_deadline else ""
+                result["flag"] = bool(result.get("is_target_rfp"))
                 source_text = text_by_key.get(
                     result["company"].casefold() + "|" + result["source_url"].casefold(), ""
                 )
@@ -1198,7 +1289,9 @@ def main():
                 for alert in alerts:
                     if (alert["company"].casefold(), alert["source_url"].casefold()) == (result["company"].casefold(), result["source_url"].casefold()):
                         merge_enrichment(alert, update)
-                        alert.update({k: result.get(k, "") for k in ("document_status", "confidence_score", "verification_reason", "evidence_quote", "email_eligible", "email_block_reason")})
+                        alert["target_topics"] = result.get("target_topics", "")
+                        alert["is_target_rfp"] = result.get("is_target_rfp", False)
+                        alert.update({k: result.get(k, "") for k in ("document_status", "confidence_score", "verification_reason", "evidence_quote", "email_eligible", "email_block_reason", "deadline_text", "deadline_date")})
                         if result.get("evidence_quote"):
                             alert["new_evidence"] = [result["evidence_quote"]]
                 state_key = result["company"].casefold() + "|" + result["source_url"].casefold()
@@ -1208,7 +1301,7 @@ def main():
                         "application_url": result.get("application_url", ""),
                         "gemini_summary": result.get("gemini_summary", ""),
                     })
-                if update.get("relevant") and result["change_type"] == "NEW_OR_CHANGED" and not args.baseline:
+                if update.get("relevant") and is_target_rfp_record(result, update) and result["change_type"] == "NEW_OR_CHANGED" and not args.baseline:
                     key = (result["company"].casefold(), result["source_url"].casefold())
                     if key not in alert_keys:
                         alert = dict(result)
@@ -1216,7 +1309,7 @@ def main():
                             "priority": "HIGH" if update.get("confidence") == "high" else "MEDIUM",
                             "change_summary": "Gemini-reviewed funding opportunity",
                             "new_evidence": [result.get("evidence_quote", "")] if result.get("evidence_quote") else [],
-                            "topic_terms": [],
+                            "topic_terms": result.get("target_topics", "").split("; ") if result.get("target_topics") else [],
                         })
                         alerts.append(alert)
                         alert_keys.add(key)
@@ -1306,13 +1399,15 @@ def main():
                     "eligibility": "", "application_url": application_url,
                     "evidence": "; ".join(evidence), "evidence_quote": "", "field_evidence": "",
                     "funding_amount": "", "sponsor": candidate.company, "sponsor_type": "unknown",
-                    "therapeutic_areas": "; ".join(cls["topic_terms"]), "focus": candidate.description,
+                    "therapeutic_areas": "; ".join(cls["topic_terms"]),
+                    "target_topics": "; ".join(cls["target_topics"]), "focus": candidate.description,
                     "geography": "", "reference_id": "", "contact_email": first_email(text),
                     "source_type": "search_discovered", "source_authority": "unverified",
                     "priority": cls["priority"], "funding_terms": "; ".join(cls["funding_terms"]),
                     "relevance_score": (2 if cls["flag"] else 0) + (1 if cls["topic_terms"] else 0),
                     "change_type": "NEW_OR_CHANGED", "changed_fields": "page_content",
-                    "flag": cls["flag"], "gemini_relevance": "", "gemini_confidence": "",
+                    "flag": cls["flag"], "is_target_rfp": cls["is_target_rfp"],
+                    "gemini_relevance": "", "gemini_confidence": "",
                     "gemini_summary": "", "checked_at": now, "error": error,
                 }
                 result.update(verify_opportunity(candidate.url, final_url, title, text))
@@ -1323,7 +1418,11 @@ def main():
                 existing_keys.add(key)
                 if (not error or recovered_with_public_alternative) and status < 400:
                     state[source_key] = {
-                        "fingerprint": hashlib.sha256((final_url + "\n" + application_url + "\n" + text).encode("utf-8", errors="ignore")).hexdigest(),
+                        "fingerprint": opportunity_fingerprint(
+                            final_url, application_url, result.get("opportunity_title", ""),
+                            result.get("deadline_text", ""), result.get("evidence", ""),
+                            cls["target_topics"],
+                        ),
                         "checked_at": now, "flag": cls["flag"], "final_url": final_url,
                         "application_url": application_url, "opportunity_evidence": evidence,
                     }
@@ -1336,6 +1435,11 @@ def main():
                     if not update:
                         continue
                     merge_enrichment(result, update)
+                    if update.get("target_topics"):
+                        result["target_topics"] = "; ".join(
+                            dict.fromkeys(str(value).strip() for value in update["target_topics"] if str(value).strip())
+                        )
+                    result["is_target_rfp"] = is_target_rfp_record(result, update)
                     source_text = discovered_text.get(
                         result["company"].casefold() + "|" + result["source_url"].casefold(), ""
                     )
@@ -1346,13 +1450,15 @@ def main():
                         result["source_url"], result.get("final_url", ""),
                         result.get("opportunity_title", ""), source_text,
                     ))
+                    result["flag"] = bool(result.get("is_target_rfp"))
                     reviewed_deadline = _parse_deadline_date(str(result.get("deadline_text", "")))
                     result["deadline_date"] = reviewed_deadline.isoformat() if reviewed_deadline else ""
                     if (
                         update.get("relevant")
+                        and is_target_rfp_record(result, update)
                         and result.get("email_eligible") == "Yes"
                         and result.get("evidence_quote")
-                        and not deadline_is_expired(result)
+                        and not deadline_is_too_soon(result)
                         and not args.baseline
                     ):
                         alert = dict(result)
@@ -1374,7 +1480,7 @@ def main():
         alert for alert in alerts
         if (
             alert.get("email_eligible") == "Yes"
-            and not deadline_is_expired(alert)
+            and not deadline_is_too_soon(alert)
             and not alert.get("email_block_reason")
             and not email_url_block_reason(alert.get("application_url") or alert.get("final_url") or alert.get("source_url"))
             and not alert.get("access_issue")
