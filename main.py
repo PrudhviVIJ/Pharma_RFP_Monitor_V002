@@ -142,6 +142,7 @@ MAX_LINKS_PER_SEED = int(os.getenv("MAX_LINKS_PER_SEED", "20"))
 MAX_DISCOVERED_URLS = int(os.getenv("MAX_DISCOVERED_URLS", "200"))
 MAX_FAILURE_RATIO = float(os.getenv("MAX_FAILURE_RATIO", "0.50"))
 ALERT_MIN_LEAD_DAYS = int(os.getenv("ALERT_MIN_LEAD_DAYS", "7"))
+REQUIRE_VERIFIABLE_ALERT_DEADLINE = os.getenv("REQUIRE_VERIFIABLE_ALERT_DEADLINE", "true").lower() in {"1", "true", "yes"}
 MONITOR_TIMEZONE = ZoneInfo("Asia/Kolkata")
 HEALTH_FILE = OUTPUT_DIR / "health.json"
 RUN_ID = uuid.uuid4().hex[:12]
@@ -709,6 +710,14 @@ def deadline_is_too_soon(alert, today=None):
     days = deadline_days_remaining(alert, today)
     return days is not None and days <= ALERT_MIN_LEAD_DAYS
 
+def alert_deadline_block_reason(alert, today=None):
+    """Return the reason an alert cannot be sent because of deadline quality."""
+    if deadline_is_too_soon(alert, today):
+        return "Expired or within minimum lead time"
+    if REQUIRE_VERIFIABLE_ALERT_DEADLINE and deadline_days_remaining(alert, today) is None:
+        return "No verifiable submission deadline"
+    return ""
+
 def first_email(text: str) -> str:
     match = re.search(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", text or "", re.I)
     return match.group(0) if match else ""
@@ -728,7 +737,7 @@ def build_email_alert_rows(alerts):
         email_url = alert.get("application_url") or alert.get("final_url") or alert.get("source_url")
         if (
             alert.get("email_eligible") != "Yes"
-            or deadline_is_too_soon(alert)
+            or alert_deadline_block_reason(alert)
             or alert.get("email_block_reason")
             or email_url_block_reason(email_url)
             or alert.get("access_issue")
@@ -824,8 +833,8 @@ def build_daily_run_log_rows(results, alerts, *, args, email_result, email_error
             alert_status, alert_reason = "NOT_SENT", "Not a verified target RFP"
         elif result.get("email_eligible") != "Yes":
             alert_status, alert_reason = "NOT_SENT", result.get("email_block_reason") or "Email eligibility failed"
-        elif deadline_is_too_soon(result):
-            alert_status, alert_reason = "NOT_SENT", "Expired or within minimum lead time"
+        elif alert_deadline_block_reason(result):
+            alert_status, alert_reason = "NOT_SENT", alert_deadline_block_reason(result)
         elif email_url_block_reason(result.get("application_url") or result.get("final_url") or result.get("source_url")):
             alert_status, alert_reason = "NOT_SENT", "Application URL blocked"
         elif result.get("access_issue"):
@@ -1567,7 +1576,7 @@ def main():
                         and is_target_rfp_record(result, update)
                         and result.get("email_eligible") == "Yes"
                         and result.get("evidence_quote")
-                        and not deadline_is_too_soon(result)
+                        and not alert_deadline_block_reason(result)
                         and not args.baseline
                     ):
                         alert = dict(result)
@@ -1589,7 +1598,7 @@ def main():
         alert for alert in alerts
         if (
             alert.get("email_eligible") == "Yes"
-            and not deadline_is_too_soon(alert)
+            and not alert_deadline_block_reason(alert)
             and not alert.get("email_block_reason")
             and not email_url_block_reason(alert.get("application_url") or alert.get("final_url") or alert.get("source_url"))
             and not alert.get("access_issue")

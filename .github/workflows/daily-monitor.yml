@@ -11,6 +11,11 @@ on:
         required: false
         type: boolean
         default: false
+      reset_scrape_state:
+        description: "Clear cached scrape fingerprints and previous reports before this run"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -160,6 +165,18 @@ jobs:
       - name: Prepare monitor state
         run: |
           mkdir -p output logs
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.reset_scrape_state }}" = "true" ]; then
+            echo "Reset requested: clearing cached scrape state, reports, and daily logs."
+            printf '{}\n' > output/monitor_state.json
+            rm -f output/rfp_grant_matches.csv \
+              output/last_alert_candidates.csv \
+              output/last_run_report.csv \
+              output/opportunities.md \
+              output/gemini_discovered_urls.json \
+              output/health.json
+            rm -rf output/daily_run_logs
+          fi
 
           if [ ! -f output/.monitor-state-cache-v3 ]; then
             echo "No state in the new cache namespace; starting a fresh scrape history."

@@ -101,6 +101,7 @@ The tool follows only a bounded, one-level set of same-site links from each work
 - `output/last_run_report.csv` — results for the current run.
 - `output/last_alert_candidates.csv` — the exact records that passed the final email-alert filters for the current run.
 - `output/daily_run_logs/DD-MM-YY.csv` — one CSV per monitor day containing findings and alert decisions. The `run_date` and `checked_at` fields use `DD/MM/YY`; each row states whether an alert was `SENT` or `NOT_SENT` and explains why. Filenames use hyphens because `/` is invalid in Windows filenames.
+- `REQUIRE_VERIFIABLE_ALERT_DEADLINE=true` blocks alerts when the source does not provide a parseable submission deadline. This prevents undated or stale-looking RFP documents from being emailed.
 - `output/rfp_grant_matches.csv` — current page-level matches.
 - `output/monitor_state.json` — saved fingerprints used by change detection.
 - `output/gemini_discovered_urls.json` — URLs returned by the optional Gemini discovery stage.
