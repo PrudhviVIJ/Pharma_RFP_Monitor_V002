@@ -1,1 +1,14 @@
-
+[
+  {
+    "company": "UCB",
+    "url": "https://www.ucb.com/our-science/Our-commitments/Grants/RFP-Acute-Seizures-Outpatient-Preparedness",
+    "description": "UCB has announced a Request for Proposals (RFP) for independent medical education initiatives. This funding opportunity seeks to support high-quality educational programs that address critical gaps in the recognition, assessment, and management of acute seizure events and seizure emergencies among people living with epilepsy.",
+    "discovered_from": "gemini_google_search"
+  },
+  {
+    "company": "Rigel Pharmaceuticals",
+    "url": "https://www.rigel.com/pipeline/independent-medical-education",
+    "description": "Rigel Pharmaceuticals has an Independent Medical Education (IME) Grant Request for Proposal focused on the evolving treatment landscape and disease management for patients with ER-positive/HER-negative metastatic breast cancer.",
+    "discovered_from": "gemini_google_search"
+  }
+]

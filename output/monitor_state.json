@@ -1,1 +1,780 @@
-
+{
+  "edwards lifesciences|https://ed-grants.edwards.com/edu_grants_homepage": {
+    "fingerprint": "d79699bd14199f01ef65443c22099171322652ca35de1b3bee4519dfe86f5f84",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://ed-grants.edwards.com/Edu_Grants_HomePage",
+    "application_url": "https://ed-grants.edwards.com/Edu_Grants_THV",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page from Edwards Lifesciences describes an educational grant portal supporting programs for structural heart disease and critical care monitoring. It does not mention oncology or neurology, making it irrelevant to the search criteria."
+  },
+  "daiichi sankyo|https://daiichisankyo.us/independent-medical-education": {
+    "fingerprint": "1e269d326527573a68aa84a283030e85c482d5f71a57b413fb6e8939402617e3",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://daiichisankyo.us/independent-grants",
+    "application_url": "https://daiichisankyo.us/independent-grants",
+    "opportunity_evidence": [],
+    "gemini_summary": "Daiichi Sankyo, Inc. accepts grant applications, including Call for Grant Applications (CGAs) and Requests for Proposals (RFPs), for independent education and scientific programs. The current therapeutic area of interest for independent grants is oncology. Applications are accepted on an ongoing basis and must be submitted at least 60 days prior to the activity start date."
+  },
+  "pfizer|https://www.pfizer.com/about/programs-policies/grants/independent-medical-education": {
+    "fingerprint": "178ae74485b1c88405653e586a761e4b169aae0eeb3102e2d66f33dcd7aec373",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.pfizer.com/about/programs-policies/grants/independent-medical-education",
+    "application_url": "https://www.pfizer.com/about/programs-policies/grants",
+    "opportunity_evidence": [],
+    "gemini_summary": "This Pfizer page describes its Independent Medical Education grant program and the process for posting Requests for Proposals (RFPs) in certain clinical areas. However, it does not list any specific oncology or neurology RFPs on this page, making it irrelevant for direct targeting."
+  },
+  "astellas|https://www.cybergrants.com/pls/cybergrants/quiz.display_question?x_gm_id=8972&x_quiz_id=12850": {
+    "fingerprint": "694e0a1b36c0df23b92579c12fc7c527d8b0328f3cb32aaebcb4d004373b8bd7",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/quiz.display_question?x_gm_id=8972&x_quiz_id=12850",
+    "application_url": "",
+    "opportunity_evidence": [],
+    "gemini_summary": "This Astellas page is a quiz asking users to select a funding type (Grants for Education, Grants for General Research, Grants/Sponsorships for Patient Organisations). It defines these grant types but does not specify any therapeutic areas, including oncology or neurology."
+  },
+  "jazz pharma|https://www.jazzpharma.com/our-purpose/medical-education": {
+    "fingerprint": "8e0c7de1e5d6e356c4bef08f91b0ffc34344e23bbc41768b870be7931c21ba29",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.jazzpharma.com/our-purpose/medical-education",
+    "application_url": "https://www.cybergrants.com/jazzpharma/meded",
+    "opportunity_evidence": [],
+    "gemini_summary": "Jazz Pharmaceuticals offers Medical Education Grants in therapeutic areas of interest including Neuroscience (Narcolepsy, Idiopathic Hypersomnia, Epilepsy) and Oncology/Neuro-Oncology/Hematology (ALL, AML, GI Cancers, Glioma, SCLC). Eligible applicants include medical schools, associations, hospitals, and education providers. Grant requests are accepted via their Request Management System at least 60 days prior to the activity start date."
+  },
+  "astrazeneca|https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=3012&x_source_flag=&x_style_id=&x_proposal_type_id=51430&x_invitation_id=": {
+    "fingerprint": "f7c176de75eed4d1d90024e85da72d528e31df62646736ab5c0a1f874e1cfd1d",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=3012&x_source_flag=&x_style_id=&x_proposal_type_id=51430&x_invitation_id=",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/gs_reg.redirect?x_gm_id=3012&x_source_flag=&x_style_id=&x_proposal_type_id=51430&x_invitation_id=&x_language_code=en-US",
+    "opportunity_evidence": [],
+    "gemini_summary": "The page is a login portal for AstraZeneca's Medical Education Application and does not contain any funding opportunity announcements."
+  },
+  "merck|https://msd.versaic.com/login": {
+    "fingerprint": "9d2fd995b57f595a3168011e804d990807b2654cc2a019282f868775ed0a7204",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://msd.versaic.com/login",
+    "application_url": "http://msdimegrants.com/",
+    "opportunity_evidence": [],
+    "gemini_summary": "This is a login page for MSD's grant portal. While it mentions 'Requests for Proposals' and 'Independent Medical Education,' the specific example provided on this page is for Inflammatory Bowel Disease (IBD), which is not an oncology or neurology topic. The page describes general grant types but doesn't offer specific relevant oncology/neurology opportunities."
+  },
+  "bristol myers squibb|https://www.cybergrants.com/pls/cybergrants/np_portal.turnstile?x_source_flag=&x_gm_id=5084&x_proposal_type_id=58720&x_invitation_id=&x_org_id=&x_style_id=&x_language_code=en-us": {
+    "fingerprint": "24e819124ddbd226d795801589f07d541682b3d9a60bc78ef1402765782dd1f9",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/np_portal.turnstile?x_source_flag=&x_gm_id=5084&x_proposal_type_id=58720&x_invitation_id=&x_org_id=&x_style_id=&x_language_code=en-US",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/gs_reg.redirect?x_gm_id=5084&x_source_flag=&x_style_id=&x_proposal_type_id=58720&x_invitation_id=&x_language_code=en-US",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page is a login portal for Bristol Myers Squibb, lacking any details about funding opportunities or specific therapeutic areas."
+  },
+  "genentech|https://www.gene.com/good/giving/corporate-giving/imed": {
+    "fingerprint": "787526ca5aa079a62792d0d332d5d2d1412ee3769cd8af623e9b8f829fa59a4e",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.gene.com/good/giving/corporate-giving/imed",
+    "application_url": "https://cdcciam.gene.com/",
+    "opportunity_evidence": [],
+    "gemini_summary": "Genentech offers Independent Medical Education (IME) grants to improve patient health outcomes. While no specific \"Request for Proposals\" are currently open, the page outlines the ongoing process for submitting grant applications, with funding priorities including various oncology and neurology disease states. Applications must be submitted at least 60 days prior to the activity start date."
+  },
+  "novartis|https://www.novartis.com/us-en/about/external-funding/educational-grants": {
+    "fingerprint": "14a0cd4ff0bc1a64343e749e9d46ee379073755cc24517031f039806055d6155",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.novartis.com/us-en/healthcare-professionals/external-funding/educational-grants",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=2932&x_proposal_type_id=51678",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page provides information about Novartis's general external funding portal for educational grants and sponsorships. However, it does not specify any current oncology or neurology-focused funding opportunities."
+  },
+  "exelixis|https://grants.exelixis.com/": {
+    "fingerprint": "aa71acedf5b164be22f91b95e2f0d42d1017f471e7aa6c7b35501a99a834577a",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.exelixis.com/grants-giving/",
+    "application_url": "https://grants.exelixis.com/",
+    "opportunity_evidence": [],
+    "gemini_summary": "Exelixis offers various grant and giving opportunities, including independent medical education and other programs, specifically welcoming proposals focused on oncology, with particular interest in renal cell carcinoma, hepatocellular carcinoma, thyroid cancer, and neuroendocrine tumors. Submission deadlines vary by program type."
+  },
+  "sanofi|https://sanofi.envisionpharma.com/ienv_sanofi_qual/visiontracker/portal/login.xhtml?pgm=cme&windowid=d72": {
+    "fingerprint": "8604f5d9dec9f06ee59cfabb06554c6ffa2d54cc2704c4951c1fe09350c10c8a",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://sanofi.envisionpharma.com/ienv_sanofi_qual/visiontracker/portal/login.xhtml?pgm=CME&windowId=d72",
+    "application_url": "",
+    "opportunity_evidence": [],
+    "gemini_summary": "This is a login portal for a Sanofi system, not an announcement for an RFP or funding opportunity. No specific therapeutic area for an opportunity is mentioned on the page itself."
+  },
+  "eisai|https://eisaigfms.my.site.com/grants/s/login/?ec=302&starturl=%2fgrants%2fs%2f": {
+    "fingerprint": "61dc69003a0e24e21f1d348150fbf0a601fff85b0bd9124ce4d79a85210fbe0e",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://eisaigfms.my.site.com/grants/s/login/?ec=302&startURL=%2Fgrants%2Fs%2F",
+    "application_url": "https://eisaigfms.my.site.com/grants/s/login/?",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page is a login portal for Eisai's grant management system and does not contain any open RFP or funding announcements relevant to oncology or neurology."
+  },
+  "eli lilly|https://gso.my.site.com/lillygrantoffice/s/": {
+    "fingerprint": "61fd619d6a5c9c8f9fa235ac243f8c25740c3a0863b044150cb2421d15226467",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://gso.my.site.com/LillyGrantOffice/s/",
+    "application_url": "https://gso.my.site.com/LillyGrantOffice/s/?",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page appears to be a very minimal home page for Eli Lilly's Grant Office, likely part of a portal, and does not contain any open RFP or funding announcements relevant to oncology or neurology."
+  },
+  "bayer|https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=8612&x_proposal_type_id=68490": {
+    "fingerprint": "888d906220522378ed2a0cf80c608d893b83837eee8f841c194a646c560ca480",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=8612&x_proposal_type_id=68490",
+    "application_url": "https://www.cybergrants.com/bayerag/Imprint.pdf",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page is a login portal for Bayer AG's proposal/grant application system hosted by CyberGrants, and does not contain any open RFP or funding announcements relevant to oncology or neurology."
+  },
+  "boehringer ingelheim|https://pro.boehringer-ingelheim.com/funding/medical-education-grants": {
+    "fingerprint": "78fef5036346ceeb1bf72aea30c2ddd8751b53a52e8550d9e7820a2721f90506",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://pro.boehringer-ingelheim.com/funding/medical-education-grants",
+    "application_url": "",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page is an interruption message (bot check) and contains no relevant content about funding or proposals."
+  },
+  "aveo|https://www.aveooncology.com/medical-information/medical-grants-cme/": {
+    "fingerprint": "3a598f7cba45345beebb1d67e367cd2d9ada8c825402730bd9c88f960ed5a347",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.aveooncology.com/medical-information/medical-grants-cme/",
+    "application_url": "https://www.aveooncology.com/wp-content/uploads/2024/10/Code_of_Business_Conduct_and_Ethics.pdf",
+    "opportunity_evidence": [],
+    "gemini_summary": "AVEO Oncology offers Independent Medical Education (IME) grants focusing on oncology topics such as cancer cachexia and specific carcinomas. Applications require submission at least 60 days before the activity via a specified email."
+  },
+  "arcus|https://arcusbio.com/about-us/contact-us/": {
+    "fingerprint": "7ab09f3d484ac5a06e2880d470009d4c2a1815a80fdbcd79d3511717af579c2a",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://arcusbio.com/about-us/contact-us/",
+    "application_url": "",
+    "opportunity_evidence": [],
+    "gemini_summary": "This is a contact page with no relevant information regarding funding opportunities or proposals."
+  },
+  "taiho rfp|https://www.taihooncology.com/us/grants-donations/continuing-medical-education/": {
+    "fingerprint": "2b44003fb3d497cb7314f780a9191d013123df6dad9222e3472be4837217a101",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.taihooncology.com/us/grants-donations/continuing-medical-education/",
+    "application_url": "https://www.taihopharma.ca/documents/47/RFE_CRC_2026.pdf",
+    "opportunity_evidence": [],
+    "gemini_summary": "Taiho Oncology offers IME grants via \"Request for Education\" opportunities in oncology, specifically Colorectal Cancer and Non-Small Cell Lung Cancer. Applications are submitted online, with details on requirements and deadlines."
+  },
+  "gsk rfp|https://www.gskgrants.com/s/login/?language=en_us": {
+    "fingerprint": "fd6dafae4709f78951c445e237a2fbf40e8531152d88908a7e11b0819a4d80ae",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.gskgrants.com/s/login/?language=en_US",
+    "application_url": "https://www.gskgrants.com/s/regionselection",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page is a login portal for GSK's Grants and Donations. It mentions grants but does not provide details of specific opportunities or therapeutic areas; it directs users to www.GSK.com for more information."
+  },
+  "takeda|https://takeda.envisionpharma.com/ienv_takeda/visiontracker/portal/login.xhtml?pgm=cme&windowid=6bd": {
+    "fingerprint": "4df6c3f33347469941bcba9437f966e6d08282abd20d423e26f3d86832bf9496",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://takeda.envisionpharma.com/ienv_takeda/404.xhtml?windowId=b37",
+    "application_url": "",
+    "opportunity_evidence": [],
+    "gemini_summary": "The page returned a 404 error, indicating no content is available for review."
+  },
+  "amgen|https://c3-amgen.my.site.com/amg_healthcaregrants_login?type=ime": {
+    "fingerprint": "65a41fea414cc1b81d031a655a369fb9b42ec4d29027d3c5a984b32fc97b3780",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://c3-amgen.my.site.com/AMG_HealthcareGrants_login?Type=IME",
+    "application_url": "",
+    "opportunity_evidence": [],
+    "gemini_summary": "The page is a system notice about the temporary unavailability of Amgen's Independent Medical Education and Donation application portal, not a specific funding opportunity announcement."
+  },
+  "az|https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=3012&x_source_flag=&x_style_id=&x_proposal_type_id=51430&x_invitation_id=": {
+    "fingerprint": "f7c176de75eed4d1d90024e85da72d528e31df62646736ab5c0a1f874e1cfd1d",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=3012&x_source_flag=&x_style_id=&x_proposal_type_id=51430&x_invitation_id=",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/gs_reg.redirect?x_gm_id=3012&x_source_flag=&x_style_id=&x_proposal_type_id=51430&x_invitation_id=&x_language_code=en-US",
+    "opportunity_evidence": [],
+    "gemini_summary": "The page is a login portal for AstraZeneca's Medical Education Application and does not contain any funding opportunity announcements."
+  },
+  "eisai|https://eisaigfms.my.site.com/grants/s/login/": {
+    "fingerprint": "41eb30948836492ce2dd2f1577e5086f39929e6e7534e4d02f19f10ee9e78670",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://eisaigfms.my.site.com/grants/s/login/",
+    "application_url": "https://eisaigfms.my.site.com/grants/s/login/?",
+    "opportunity_evidence": [],
+    "gemini_summary": "The page is a generic login portal and does not contain any funding opportunity announcements."
+  },
+  "beone medicines|https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=10452&x_proposal_type_id=92232": {
+    "fingerprint": "b6d420e4eba2241600d90647ace905b64303fbffea27a8fcc27a6ed04fc92db9",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=10452&x_proposal_type_id=92232",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/gs_reg.redirect?x_gm_id=10452&x_source_flag=&x_style_id=&x_proposal_type_id=92232&x_invitation_id=&x_language_code=en-US",
+    "opportunity_evidence": [],
+    "gemini_summary": "The page is a login portal for BeOne Medicines' Independent Medical Education Application, not an announcement, and lacks therapeutic area specifics."
+  },
+  "incyte|https://www.incytegrantsandgiving.com/": {
+    "fingerprint": "ee1b7d3e2dcbef607474e7d4ee2bc4dad6c0d48c43f4ef62586045b9baa7cfc6",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.incytegrantsandgiving.com/",
+    "application_url": "https://www.incytegrantsandgiving.com/index.html",
+    "opportunity_evidence": [],
+    "gemini_summary": "Incyte's Grants & Giving Portal accepts Independent Medical Education (IME) Grant Requests for initiatives focused on improving the lives of patients with cancer. Requests should be submitted at least 60 calendar days prior to the decision needed."
+  },
+  "pharmaessentia|https://pharmaessentiamedical.com/educational-grants/": {
+    "fingerprint": "934acc055ad6a289527e3172eafa515c6599f510b81c21ec6a278fea79815ea3",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://pharmaessentiamedical.com/educational-grants/",
+    "application_url": "https://pharmaessentiamedical.com/educational-grants/",
+    "opportunity_evidence": [],
+    "gemini_summary": "PharmaEssentia USA offers Independent Medical Education Grants focused on myeloproliferative neoplasms (MPNs), essential thrombocythemia (ET), and polycythemia vera (PV). Requests for funding should be submitted via email at least 60 days prior to the educational activity."
+  },
+  "bms|https://www.gskgrants.com/s/login/?language=en_us": {
+    "fingerprint": "fd6dafae4709f78951c445e237a2fbf40e8531152d88908a7e11b0819a4d80ae",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.gskgrants.com/s/login/?language=en_US",
+    "application_url": "https://www.gskgrants.com/s/regionselection",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page is a login portal for GSK's Grants and Donations. It mentions grants but does not provide details of specific opportunities or therapeutic areas; it directs users to www.GSK.com for more information."
+  },
+  "gsk|https://www.gskgrants.com/s/login/?language=en_us&ec=302&starturl=%2fs%2f": {
+    "fingerprint": "3befe0980efe8f20a31b94c5888c558f6e138f9fb90b8316972db1041da5425e",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.gskgrants.com/s/login/?language=en_US&ec=302&startURL=%2Fs%2F",
+    "application_url": "https://www.gskgrants.com/s/regionselection",
+    "opportunity_evidence": [],
+    "gemini_summary": "This is a generic login page with no content related to funding opportunities or therapeutic areas."
+  },
+  "takeda|https://www.cybergrants.com/pls/cybergrants/np_portal.turnstile?x_source_flag=&x_gm_id=5084&x_proposal_type_id=58720&x_invitation_id=&x_org_id=&x_style_id=&x_language_code=en-us": {
+    "fingerprint": "24e819124ddbd226d795801589f07d541682b3d9a60bc78ef1402765782dd1f9",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/np_portal.turnstile?x_source_flag=&x_gm_id=5084&x_proposal_type_id=58720&x_invitation_id=&x_org_id=&x_style_id=&x_language_code=en-US",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/gs_reg.redirect?x_gm_id=5084&x_source_flag=&x_style_id=&x_proposal_type_id=58720&x_invitation_id=&x_language_code=en-US",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page is a login portal for Bristol Myers Squibb, lacking any details about funding opportunities or specific therapeutic areas."
+  },
+  "sobi|https://grants.sobi.com/": {
+    "fingerprint": "37257998cb1292dbbfc138f1ac455890369ac5413549522839e419b868d33c7b",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://grants.sobi.com/",
+    "application_url": "https://grants.sobi.com/",
+    "opportunity_evidence": [],
+    "gemini_summary": "Sobi's grants portal allows for submission of various educational and research grants, but does not announce specific oncology or neurology funding opportunities as a current focus."
+  },
+  "geron|https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=11092&x_proposal_type_id=102936": {
+    "fingerprint": "4700e8ea56f2fb69ac6cb2c842e74ee84003c858de385b824414262464b61c8d",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.geron.com/about-geron/partnerships/",
+    "application_url": "https://www.geron.com/wp-content/uploads/2025/12/2026-Medical-Education-Giving-Overview.pdf",
+    "opportunity_evidence": [],
+    "gemini_summary": "Geron offers funding opportunities for medical education, grants, sponsorships, and investigator-sponsored research, with a focus on blood cancers like myelodysplastic syndromes and myeloproliferative neoplasms/myelofibrosis."
+  },
+  "karyopharm|https://www.karyopharm.com/responsibility/grants-giving/": {
+    "fingerprint": "597bdac29105039a258208f2d2df7d9b7a5682a9a6ceba0450c8523d9f1b8e91",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.karyopharm.com/responsibility/grants-giving/",
+    "application_url": "https://www.cybergrants.com/karyopharm/meded",
+    "opportunity_evidence": [],
+    "gemini_summary": "Karyopharm provides medical education grants, sponsorships, and charitable donations focused on oncology disease states such as Multiple Myeloma, Endometrial Cancer, Myelofibrosis, and Myelodysplastic Syndromes."
+  },
+  "pfizer|https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=4617&x_proposal_type_id=51236": {
+    "fingerprint": "034c4d3fbeed84e6fc0978713c71ed0ae0b80d1bdcab084b3bc5c122adfac96c",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=4617&x_proposal_type_id=51236",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/gs_reg.redirect?x_gm_id=4617&x_source_flag=&x_style_id=&x_proposal_type_id=51236&x_invitation_id=&x_language_code=en-US",
+    "opportunity_evidence": [],
+    "gemini_summary": "Pfizer's grant submission portal is a login page and does not announce specific oncology or neurology funding opportunities."
+  },
+  "abbvie|https://abbvie.envisionpharma.com/ienv_abbvie_grants/visiontracker/portal/login.xhtml?pgm=cme&windowid=373": {
+    "fingerprint": "097e476245837bbe0d8a2b44095381dfa9c27823fa5e54db49db55ddd421e5db",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://abbvie.envisionpharma.com/ienv_abbvie_grants/visiontracker/portal/login.xhtml?pgm=CME&windowId=373",
+    "application_url": "https://abbvie.envisionpharma.com/ienv_abbvie_grants/saml/desktop?IDP=AbbvieGrants",
+    "opportunity_evidence": [],
+    "gemini_summary": "AbbVie's grants portal is a login page and does not announce specific oncology or neurology funding opportunities."
+  },
+  "novartis rfp|https://www.novartis.com/us-en/about/external-funding/educational-grants": {
+    "fingerprint": "14a0cd4ff0bc1a64343e749e9d46ee379073755cc24517031f039806055d6155",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.novartis.com/us-en/healthcare-professionals/external-funding/educational-grants",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=2932&x_proposal_type_id=51678",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page provides information about Novartis's general external funding portal for educational grants and sponsorships. However, it does not specify any current oncology or neurology-focused funding opportunities."
+  },
+  "ipsen|https://www.ipsen.com/us/grants/": {
+    "fingerprint": "07d9854d327e4a52c0ad52b1082250a4f259fd736e71241fb37967763dfd8e6c",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.ipsen.com/us/grants/",
+    "application_url": "https://www.ipsen.com/us/wp-content/uploads/sites/2/2025/09/Ipsen-Grants-Donations-Portal_Guide-For-Requestors.pdf",
+    "opportunity_evidence": [
+      "Each active RFP will include specific deadlines and program guidelines, such as educational focus, target audience, format, duration, and budget."
+    ],
+    "gemini_summary": "Ipsen's grants page outlines their independent medical education grants, fellowships, and RFP processes, explicitly listing Neuroscience and Oncology as therapeutic areas of focus. However, the page also states that there are currently no active RFPs in Oncology or Neuroscience."
+  },
+  "bms|https://www.bms.com/our-impact/corporate-giving/funding-opportunities.html": {
+    "fingerprint": "212edd61634dd0035632e0be0b36da821e43ef4d39511faa82ee9d23a866c09f",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.bms.com/our-impact/corporate-giving/funding-opportunities.html",
+    "application_url": "https://www.bms.com/assets/bms/us/english-documents/our-principles/UK-CA-Slavery-Human-Trafficking-Statement.pdf",
+    "opportunity_evidence": [
+      "Submit now YES - Accepting applications | NO - Not accepting applications Cardiovascular Independent medical education Other types of grants, giving and corporate sponsorship support ( Learn more ) General education - Anticoagulation YES YES Stroke prevention / Atrial fibrillation YES YES VTE treatment and prevention YES YES Hypertrophic cardiomyopathy YES YES Secondary stroke prevention YES YES Cell therapy Independent medical education Other types of grants, giving and corporate sponsorship support ( Learn more ) Cell therapy - Non-Hodgkin’s lymphoma (DLBCL, FL, MCL, MZL) YES YES Cell therapy - Chronic lymphocytic leukemia YES YES Cell therapy - Multiple myeloma YES YES Cell therapy - Syst"
+    ],
+    "gemini_summary": "Bristol Myers Squibb offers current funding opportunities for Independent Medical Education (IME) and other types of grants/corporate sponsorship in Neuroscience (including Alzheimer’s disease and Schizophrenia) and Oncology (including various solid tumors). The page indicates that applications are currently being accepted for most listed areas."
+  },
+  "itm radiopharma|https://www.itm-radiopharma.com/company/partnership-opportunities/": {
+    "fingerprint": "c7c489c4646897d788ae8a9ccaaccaaa0c9ddc1bc759000bcdc0631f25bd8aec",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.itm-radiopharma.com/company/partnership-opportunities/",
+    "application_url": "https://www.itm-radiopharma.com/service/community-guidelines/",
+    "opportunity_evidence": [],
+    "gemini_summary": "ITM Radiopharma's page outlines general partnership and external funding opportunities for various healthcare initiatives. However, it does not specify any particular therapeutic areas, such as oncology or neurology, as current funding priorities."
+  },
+  "crinetics|https://crinetics.com/medical-education-grant-application/": {
+    "fingerprint": "ce31e915c7e1783a023f40d9fbc953703529ffa4c7e9467fda538fcc27d70075",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://crinetics.com/medical-education-grant-application/",
+    "application_url": "https://crinetics.com/contact/funding-support/",
+    "opportunity_evidence": [],
+    "gemini_summary": "Crinetics Pharmaceuticals is accepting applications for Medical Education Grants and Investigator Initiated Studies (IIS), specifically including Neuroendocrine Tumors (NETs) and Carcinoid Syndrome within its therapeutic categories. The application requires detailed information on program objectives, budget, and accreditation."
+  },
+  "camurus|https://www.camurus.com/contact/grant-request/\n\nfollow-up - grants@camurus.com": {
+    "fingerprint": "d64fdf4a7296374a43d65d2792f49f0017f256bceb9288945098093bf848c1f6",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.camurus.com/contact/grant-request/Follow-up%20-%20grants@camurus.com/",
+    "application_url": "",
+    "opportunity_evidence": [],
+    "gemini_summary": "The provided URL leads to a 'Page not found' error, thus no relevant information or funding opportunity can be extracted."
+  },
+  "perspective therapeutics|https://perspectivetherapeutics.com/": {
+    "fingerprint": "c4034359d804b337fa7c077a258a54a3eecac1868d308a077fa277981596e6af",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://perspectivetherapeutics.com/",
+    "application_url": "https://storage.googleapis.com/vendorgroup-assets/site/414442af-80d0-4ecb-95fd-86a6af34913f/2026/11/19/6aff14e2c02dd41e440d483d/VMT-a-NET%20Triple%202026.pdf",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page provides general company information, outlines its oncology focus (Neuroendocrine Tumors, Melanoma, Solid Tumors), and pipeline, but does not present any RFP or funding opportunity announcement."
+  },
+  "orano med/sanofi|https://sanofi.envisionpharma.com/ienv_sanofi_qual/visiontracker/portal/login.xhtml?pgm=cme&windowid=d72": {
+    "fingerprint": "8604f5d9dec9f06ee59cfabb06554c6ffa2d54cc2704c4951c1fe09350c10c8a",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://sanofi.envisionpharma.com/ienv_sanofi_qual/visiontracker/portal/login.xhtml?pgm=CME&windowId=d72",
+    "application_url": "",
+    "opportunity_evidence": [],
+    "gemini_summary": "This is a login portal for a Sanofi system, not an announcement for an RFP or funding opportunity. No specific therapeutic area for an opportunity is mentioned on the page itself."
+  },
+  "dsi [rfp #102]|https://grantsandgivingportal.dsi.steeprockinc.com/": {
+    "fingerprint": "701447da233af9bcb314c202040266f5ef86e23357e4e649567ade652eeb0087",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://grantsandgivingportal.dsi.steeprockinc.com/",
+    "application_url": "https://grantsandgivingportal.dsi.steeprockinc.com/TROP2_IME_RFP_103.pdf",
+    "opportunity_evidence": [
+      "CGA/RFP Identifier # Topic Release Date Due Date Document CGA-2026 FY2026 CGA 03/19/26 March 2026 - March 2027 CGA-2026 IME_RFP_103 TROP2/nonAGA NSCLC 09/24/2026 10/16/2026 RFP_103 Please note that while Daiichi Sankyo does support charitable contributions, we do not accept requests for charitable contributions via this portal."
+    ],
+    "gemini_summary": "This page announces an active Independent Medical Education Request for Proposal (RFP) focusing on 'TROP2/nonAGA NSCLC', which falls under oncology. The opportunity, 'CGA-2026 IME_RFP_103', was released on 09/24/2026 with a deadline of 10/16/2026."
+  },
+  "astrazeneca|https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=3012&x_proposal_type_id=51430": {
+    "fingerprint": "598860fc189465c37db02a69aab344a4bc27fe8fbd270da72b96e0e6133e3166",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=3012&x_proposal_type_id=51430",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/gs_reg.redirect?x_gm_id=3012&x_source_flag=&x_style_id=&x_proposal_type_id=51430&x_invitation_id=&x_language_code=en-US",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page is a login portal for a medical education application system. It is not an announcement for a specific RFP or grant opportunity in oncology or neurology."
+  },
+  "taiho - rfe - podcast|https://www.taihooncology.com/us/grants-donations/continuing-medical-education/": {
+    "fingerprint": "2b44003fb3d497cb7314f780a9191d013123df6dad9222e3472be4837217a101",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.taihooncology.com/us/grants-donations/continuing-medical-education/",
+    "application_url": "https://www.taihopharma.ca/documents/47/RFE_CRC_2026.pdf",
+    "opportunity_evidence": [],
+    "gemini_summary": "Taiho Oncology offers IME grants via \"Request for Education\" opportunities in oncology, specifically Colorectal Cancer and Non-Small Cell Lung Cancer. Applications are submitted online, with details on requirements and deadlines."
+  },
+  "taiho - rfe - ccb|https://msd.versaic.com/login": {
+    "fingerprint": "4062cdd2db9de926e700902e47b0b8bc32d5c0af34cdd9105d63d8c2b06944ec",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.taihooncology.com/us/grants_donations/continuing-medical-education/",
+    "application_url": "https://www.taihooncology.com/documents/209/vermont-long-form.pdf",
+    "opportunity_evidence": [],
+    "gemini_summary": "This is a login page for MSD's grant portal. While it mentions 'Requests for Proposals' and 'Independent Medical Education,' the specific example provided on this page is for Inflammatory Bowel Disease (IBD), which is not an oncology or neurology topic. The page describes general grant types but doesn't offer specific relevant oncology/neurology opportunities."
+  },
+  "dsi|https://grantsandgiving.dsi.steeprockinc.com/auth/login?callbackurl=%2f": {
+    "fingerprint": "fdfe3f54582b8d555d63ff2754ba9e08ce86b37aede64e81763f52f43439ac2f",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://grantsandgiving.dsi.steeprockinc.com/auth/login?callbackUrl=%2F",
+    "application_url": "https://grantsandgiving.dsi.steeprockinc.com/saml/login",
+    "opportunity_evidence": [],
+    "gemini_summary": "This is a login page for a grants portal and does not contain any active RFP/proposal announcements."
+  },
+  "jnj|https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=10892&x_proposal_type_id=100192": {
+    "fingerprint": "a8e88d23b9b2f2278bdf7c50de63906ceabf5912da9957df4e4374e0b6fa70f9",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.jnj.com/medical-connect/research/externally-sponsored-scientific-research",
+    "application_url": "https://www.careers.jnj.com/en/how-we-hire/application-tips",
+    "opportunity_evidence": [],
+    "gemini_summary": "This is a 404 error page. While 'Oncology' and 'Neuroscience' are mentioned as general product areas for J&J, there is no actual RFP or funding opportunity announced on this page."
+  },
+  "genentech - rfp|https://www.gene.com/good/giving/corporate-giving/imed": {
+    "fingerprint": "787526ca5aa079a62792d0d332d5d2d1412ee3769cd8af623e9b8f829fa59a4e",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.gene.com/good/giving/corporate-giving/imed",
+    "application_url": "https://cdcciam.gene.com/",
+    "opportunity_evidence": [],
+    "gemini_summary": "Genentech offers Independent Medical Education (IME) grants to improve patient health outcomes. While no specific \"Request for Proposals\" are currently open, the page outlines the ongoing process for submitting grant applications, with funding priorities including various oncology and neurology disease states. Applications must be submitted at least 60 days prior to the activity start date."
+  },
+  "amgen|https://amgenbus1.my.site.com/c3/s/login/": {
+    "fingerprint": "c275a50b06b53a5fe71087e90980b7eeceeb2511151c63984519b2e15604614c",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://amgenbus1.my.site.com/c3/s/login/",
+    "application_url": "https://wwwext.amgen.com/responsibility/healthy-people/community-investment/independent-medical-education-funding",
+    "opportunity_evidence": [],
+    "gemini_summary": "This is a login page for Amgen's funding request system for Independent Medical Education (IME) and Donations. It is a portal, not a specific announcement for an oncology or neurology RFP."
+  },
+  "revolution medicines|https://revmed.medcompli.com/": {
+    "fingerprint": "6019741cd4c337b48b0ea566ee1dff64b2a3507d0234a3581440d18550b09ad2",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://revmed.medcompli.com/",
+    "application_url": "",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page is a redirect or login screen with no relevant information about funding opportunities."
+  },
+  "astrazeneca rfp|https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=3012&x_proposal_type_id=51430": {
+    "fingerprint": "598860fc189465c37db02a69aab344a4bc27fe8fbd270da72b96e0e6133e3166",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=3012&x_proposal_type_id=51430",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/gs_reg.redirect?x_gm_id=3012&x_source_flag=&x_style_id=&x_proposal_type_id=51430&x_invitation_id=&x_language_code=en-US",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page is a login portal for a medical education application system. It is not an announcement for a specific RFP or grant opportunity in oncology or neurology."
+  },
+  "daiichi sankyo|https://grantsandgivingportal.dsi.steeprockinc.com/": {
+    "fingerprint": "701447da233af9bcb314c202040266f5ef86e23357e4e649567ade652eeb0087",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://grantsandgivingportal.dsi.steeprockinc.com/",
+    "application_url": "https://grantsandgivingportal.dsi.steeprockinc.com/TROP2_IME_RFP_103.pdf",
+    "opportunity_evidence": [
+      "CGA/RFP Identifier # Topic Release Date Due Date Document CGA-2026 FY2026 CGA 03/19/26 March 2026 - March 2027 CGA-2026 IME_RFP_103 TROP2/nonAGA NSCLC 09/24/2026 10/16/2026 RFP_103 Please note that while Daiichi Sankyo does support charitable contributions, we do not accept requests for charitable contributions via this portal."
+    ],
+    "gemini_summary": "This page announces an active Independent Medical Education Request for Proposal (RFP) focusing on 'TROP2/nonAGA NSCLC', which falls under oncology. The opportunity, 'CGA-2026 IME_RFP_103', was released on 09/24/2026 with a deadline of 10/16/2026."
+  },
+  "roche diagnostics|https://diagnostics.roche.com/us/en/landing-pages/medical-science/msa-funding-support.html": {
+    "fingerprint": "1f6264c9f28c30feb846cf7f7935d7e0a7f923116d979c4f93bf679edbf5c6fe",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://diagnostics.roche.com/us/en/landing-pages/medical-science/msa-funding-support.html",
+    "application_url": "https://diagnostics.roche.com/us/en/products/product-category/lab-type/sequencing/ngs-applications.html",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page provides a general overview and application form for Medical and Scientific Affairs Funding Support. It does not contain a specific RFP or grant announcement for oncology or neurology."
+  },
+  "gilead|https://gilead-grants.steeprockinc.com/": {
+    "fingerprint": "24f4bd9a77dcfa22172bdc67ab31c37687289a07bc5423c06b4b3526fc361d29",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://gilead-grants.steeprockinc.com/",
+    "application_url": "",
+    "opportunity_evidence": [],
+    "gemini_summary": "Login page for funding requests, no specific oncology/neurology opportunity or announcement details."
+  },
+  "taiho - rfe|https://researchportal.taihooncology.com/default.aspx": {
+    "fingerprint": "f443956e22c911c2cc914fa060464eb8f7e50e7de9354d7affa9c2de8d54915e",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://researchportal.taihooncology.com/Default.aspx",
+    "application_url": "https://researchportal.taihooncology.com/Documents/Taiho - Research Portal User Guide_June2022 (1).pdf",
+    "opportunity_evidence": [],
+    "gemini_summary": "Taiho Oncology's portal describes funding opportunities for Investigator Initiated Trials, medical education, and charitable contributions focused on various cancer types, making it relevant for oncology funding."
+  },
+  "takeda|https://takeda.envisionpharma.com/ienv_takeda/visiontracker/portal/login.xhtml?pgm=cme&windowid=5cc": {
+    "fingerprint": "e9db0651f05570b348efb802b9d36c4cc974019fce06f88d6463328850a8bffb",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://takeda.envisionpharma.com/ienv_takeda/visiontracker/portal/login.xhtml?pgm=CME&windowId=5cc",
+    "application_url": "",
+    "opportunity_evidence": [],
+    "gemini_summary": "Login page for Takeda, the term 'Independent Medical Education' is only in a contact email, not an announcement. No oncology/neurology mentioned."
+  },
+  "pfizer|https://pfizermarcie.my.site.com/pfzrequester/s/login/": {
+    "fingerprint": "95f756b787631917e1b5169e90d0f74a1d4011463a35d1ded88eefc88227d95b",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://pfizermarcie.my.site.com/pfzrequester/s/login/",
+    "application_url": "https://www.pfizer.com/about/programs-policies/grants",
+    "opportunity_evidence": [],
+    "gemini_summary": "Pfizer's login page mentions 'Global Medical Grants' and 'Research Collaborations' with an invitation to submit applications, indicating funding opportunities. However, no specific therapeutic area (oncology/neurology) is mentioned, making it not relevant for this review."
+  },
+  "novartis|https://ngcs.novartis.com/prweb/8fcgedbe-rpcmpksu8vfhnxc7yx-hehc*/!standard": {
+    "fingerprint": "57a6b371b74c055aa4c8bf8ca2c2f07e1286c884366770760f830aa4ed0f0799",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://ngcs.novartis.com/prweb/8fCGEDBe-RpCMPKSu8VFhnXC7Yx-HeHc*/!STANDARD",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=2932&x_proposal_type_id=51678",
+    "opportunity_evidence": [],
+    "gemini_summary": "Novartis announced a new 'external funding portal for grants and sponsorships' where new applications can be submitted. However, no specific oncology or neurology focus is indicated, making it not relevant for this review."
+  },
+  "merck / msd|https://msd.versaic.com/login": {
+    "fingerprint": "9d2fd995b57f595a3168011e804d990807b2654cc2a019282f868775ed0a7204",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://msd.versaic.com/login",
+    "application_url": "http://msdimegrants.com/",
+    "opportunity_evidence": [],
+    "gemini_summary": "This is a login page for MSD's grant portal. While it mentions 'Requests for Proposals' and 'Independent Medical Education,' the specific example provided on this page is for Inflammatory Bowel Disease (IBD), which is not an oncology or neurology topic. The page describes general grant types but doesn't offer specific relevant oncology/neurology opportunities."
+  },
+  "johnson & johnson|https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=10892&x_proposal_type_id=100192": {
+    "fingerprint": "cdc57134b706760c5ce16af7408e82ecb8d8263f44e236c6b6e84db173b02f4e",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.jnj.com/johnson-johnson-innovative-medicine-hematology-request-for-proposals",
+    "application_url": "https://www.careers.jnj.com/en/how-we-hire/application-tips",
+    "opportunity_evidence": [],
+    "gemini_summary": "This is a 404 error page. While 'Oncology' and 'Neuroscience' are mentioned as general product areas for J&J, there is no actual RFP or funding opportunity announced on this page."
+  },
+  "astellas|https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=8972&x_proposal_type_id=71432": {
+    "fingerprint": "70b57a49a4b6fbf7257723f23e5ea33c1c82e57bea5662f60348956290aff7f0",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.astellas.com/en",
+    "application_url": "https://www.astellas.com/en/science/research-and-development/external-funding",
+    "opportunity_evidence": [],
+    "gemini_summary": "This is the Astellas homepage. While 'oncology' is mentioned as one of their therapeutic areas, there is no RFP or funding opportunity announced on this page."
+  },
+  "daiichi sankyo|https://daiichisankyo.us/independent-grants": {
+    "fingerprint": "1e269d326527573a68aa84a283030e85c482d5f71a57b413fb6e8939402617e3",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://daiichisankyo.us/independent-grants",
+    "application_url": "https://daiichisankyo.us/independent-grants",
+    "opportunity_evidence": [],
+    "gemini_summary": "Daiichi Sankyo, Inc. accepts independent grant applications, both unsolicited and in response to CGAs or RFPs, specifically in oncology. These include Independent Medical Education Grants, Patient Education Grants, and Scientific Advancement Grants. Applications are accepted on an ongoing basis but require submission 60 days prior to the activity start date."
+  },
+  "daiichi sankyo|https://daiichisankyo.us/corporate-grants-and-giving": {
+    "fingerprint": "db315e9c283dd1b5856cddc8b174973435162f769c5bdee7ba54b2bae3ad522c",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://daiichisankyo.us/corporate-grants-and-giving",
+    "application_url": "https://grantsandgivingportal.dsi.steeprockinc.com/",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page describes Daiichi Sankyo's general corporate grants and giving programs, including independent grants for medical education, patient education, and scientific advancement. However, unlike the dedicated independent grants page, this page does not specify 'oncology' or 'neurology' as current therapeutic areas for these opportunities. Therefore, it does not meet the therapeutic area criteria for relevance."
+  },
+  "daiichi sankyo|https://daiichisankyo.us/daiichi-sankyo-requirements": {
+    "fingerprint": "b32f7afa5723a6576d4adeefb39af87971575d9f7fa34dc356615dea77148e59",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://daiichisankyo.us/daiichi-sankyo-requirements",
+    "application_url": "https://daiichisankyo.us/independent-grants",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page describes general requirements for corporate giving and support (grants, sponsorships) by Daiichi Sankyo. It is a policy document, not a specific funding announcement, and does not specify open oncology or neurology opportunities."
+  },
+  "pfizer|https://www.pfizer.com/about/programs-policies/grants/quality-improvement/funded-initiatives": {
+    "fingerprint": "ad699f2fa6b959a207f8013b025f900903572fc23ff5501e55b5188398bc2385",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.pfizer.com/about/programs-policies/grants/quality-improvement/funded-initiatives",
+    "application_url": "https://cdn.pfizer.com/pfizercom/funded_initiative_proposal/10302377_CHOP.pdf?VersionId=ol3n9UfQmq0scWe9KBKUB9TZNzBC5X2B",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page is an archive of previously funded initiatives, including past 'RFP Title' projects. It is not an active announcement for new funding opportunities in oncology or neurology."
+  },
+  "pfizer|https://www.pfizer.com/community-guidelines": {
+    "fingerprint": "b9c118d1c66d4925d9aae8f08d93516d857ebb2c454e8ed836a37afc93b249bf",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.pfizer.com/community-guidelines",
+    "application_url": "https://www.pfizer.com/about/programs-policies/grants",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page provides community guidelines for interaction with Pfizer's online channels and is not related to funding opportunities."
+  },
+  "pfizer|https://www.pfizer.com/about/programs-policies/grants/quality-improvement": {
+    "fingerprint": "250510c965bd7290d58216f5b9f3746830cbc31028f21a87289047a6a2a68673",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.pfizer.com/about/programs-policies/grants/quality-improvement",
+    "application_url": "https://www.pfizer.com/about/programs-policies/grants",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page provides an overview of Pfizer's Quality Improvement Grant Program and mentions the availability of Request for Proposal (RFP) postings and open RFPs. It does not, however, describe a specific oncology or neurology funding opportunity on this page itself."
+  },
+  "pfizer|https://www.pfizer.com/about/programs-policies/grants/investigator-sponsored-research/inflammation-immunology": {
+    "fingerprint": "57e81fdf5492bd9fc71e9e9940dbddfdaff996d695a80103bca1495773224d70",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.pfizer.com/about/programs-policies/grants/investigator-sponsored-research/inflammation-immunology",
+    "application_url": "https://www.pfizer.com/about/programs-policies/grants",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page invites researchers to submit proposals for Investigator Sponsored Research with Pfizer funding in Inflammation and Immunology areas. However, the specified research areas do not explicitly fall under oncology or neurology based on the provided text."
+  },
+  "pfizer|https://www.pfizer.com/about/programs-policies/grants": {
+    "fingerprint": "87950ae04aac678ab201fe1d86ad9795d2d141317f0c0ff998d7336ba93eb4e4",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.pfizer.com/about/programs-policies/grants",
+    "application_url": "https://www.pfizer.com/about/programs-policies/grants",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page provides a general overview of Pfizer's grant programs but does not announce any specific oncology or neurology funding opportunities or RFPs."
+  },
+  "pfizer|https://www.pfizer.com/about/programs-policies/grants/competitive-grants": {
+    "fingerprint": "5b3fef8f183d1e79b8558df1e76c9e05a6e236f2c9b2a135e54dbe3526d10319",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.pfizer.com/about/programs-policies/grants/competitive-grants",
+    "application_url": "https://cdn.pfizer.com/pfizercom/rfp_files/Full%20Proposal%20Review%20Summary%20-%20Smoking%20Cessation_0.pdf?VersionId=238yQo07rzjdt5rRiwv_matOmtWa9hEF",
+    "opportunity_evidence": [
+      "Pierre and Miquelon Sudan Suriname Svalbard and Jan Mayen Islands Swaziland Sweden Switzerland Syrian Arab Republic Taiwan Tajikistan Tanzania, United Republic of Thailand Togo Tokelau Tonga Trinidad and Tobago Tunisia Turkey Turkmenistan Turks and Caicos Islands Tuvalu USA Uganda Ukraine United Arab Emirates United Kingdom United States Minor Outlying I Uruguay Uzbekistan Vanuatu Venezuela Vietnam Virgin Islands (British) Virgin Islands (U.S.) Wallis and Futuna Islands Western Sahara Yemen Yugoslavia Zambia Zimbabwe Review Process Pfizer Internal Expert Review Panel Select All Clear All Title Grant Type Focus Area Country Application Due Date Real World Evidence on the Impact of Early and A",
+      "Pierre and Miquelon Sudan Suriname Svalbard and Jan Mayen Islands Swaziland Sweden Switzerland Syrian Arab Republic Taiwan Tajikistan Tanzania, United Republic of Thailand Togo Tokelau Tonga Trinidad and Tobago Tunisia Turkey Turkmenistan Turks and Caicos Islands Tuvalu USA Uganda Ukraine United Arab Emirates United Kingdom United States Minor Outlying I Uruguay Uzbekistan Vanuatu Venezuela Vietnam Virgin Islands (British) Virgin Islands (U.S.) Wallis and Futuna Islands Western Sahara Yemen Yugoslavia Zambia Zimbabwe Review Process Pfizer Internal Expert Review Panel Select All Clear All Title Grant Type Focus Area Country Application Due Date Pneumococcal Disease Prevention Release Date: Ap"
+    ],
+    "gemini_summary": "Pfizer is accepting proposals for a competitive grant program focusing on clinical research in HR+/HER2- and/or HER2+ Breast Cancer (Oncology) with an application deadline in January 2027."
+  },
+  "pfizer|https://www.pfizer.com/about/health-policies/grants": {
+    "fingerprint": "87950ae04aac678ab201fe1d86ad9795d2d141317f0c0ff998d7336ba93eb4e4",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.pfizer.com/about/programs-policies/grants",
+    "application_url": "https://www.pfizer.com/about/programs-policies/grants",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page, identical to another Pfizer grants page, provides a general overview of Pfizer's grant programs but does not announce any specific oncology or neurology funding opportunities or RFPs."
+  },
+  "jazz pharma|https://www.cybergrants.com/jazzpharma/meded": {
+    "fingerprint": "e9147693bd4699430f515d3ef3e5d868d78a6d0d658ef669675701d6307bc3cb",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=11122&x_proposal_type_id=103562",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/gs_reg.redirect?x_gm_id=11122&x_source_flag=&x_style_id=&x_proposal_type_id=103562&x_invitation_id=&x_language_code=en-US",
+    "opportunity_evidence": [
+      "We are currently accepting requests for: Meetings, Conferences, or Symposia Medical Center Grand Rounds lectures Fellowships Enduring IME activities, which may include strategies, tools, and other educational resources to use with patients Patient education in conjunction with Health Care Provider (HCP) education Areas of Interest: Neuroscience Narcolepsy Idiopathic Hypersomnia Epilepsy Dravet Syndrome Lennox-Gastaut Syndrome Tuberous Sclerosis Complex Oncology Acute Myeloid Leukemia Acute Lymphocytic Leukemia Small Cell Lung Cancer Glioma Gastroesophageal Adenocarcinoma Biliary Tract Cancer Cannabinoid Science Cannabinoid Education For additional assistance with the Jazz IME grant submissio"
+    ],
+    "gemini_summary": "Jazz Pharmaceuticals is accepting Independent Medical Education (IME) grant requests for activities in Neuroscience (e.g., Narcolepsy, Epilepsy) and Oncology (e.g., Acute Myeloid Leukemia, Glioma) for US and international initiatives. Contact mededgrant@jazzpharma.com for inquiries."
+  },
+  "jazz pharma|https://www.jazzpharma.com/our-purpose/fellowships": {
+    "fingerprint": "a8ead409ef55636f71737b514e8d70cadfff4d346713231677117f1ee017056a",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.jazzpharma.com/our-purpose/fellowships",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=11122&x_proposal_type_id=103562",
+    "opportunity_evidence": [],
+    "gemini_summary": "Jazz Pharmaceuticals offers fellowship grants to academic and research institutions for training in Neuroscience (Narcolepsy, Epilepsy) and Oncology/Hematology (Acute Lymphoblastic Leukemia, Glioma). Applications are reviewed on a rolling basis, submitted at least 60 days prior to the proposed fellowship start, via their Request Management System."
+  },
+  "jazz pharma|https://www.jazzpharma.com/social-media-global-guidelines": {
+    "fingerprint": "d0895f8585e25d92ebed0a6983af0df1f11904c626b27d06730b402591a90788",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.jazzpharma.com/social-media-global-guidelines",
+    "application_url": "https://www.jazzpharma.com/our-purpose/fellowships",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page outlines Jazz Pharmaceuticals' social media guidelines and provides contact forms. It is not an RFP or funding announcement for oncology or neurology."
+  },
+  "astrazeneca|https://www.cybergrants.com/pls/cybergrants/gs_reg.redirect?x_gm_id=3012&x_source_flag=&x_style_id=&x_proposal_type_id=51430&x_invitation_id=&x_language_code=en-us": {
+    "fingerprint": "39457b27bbff35008eac3002c922f77d62af7500879076e263ef56da4ee791f8",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/ao_reg.register?x_gm_id=3012&x_proposal_type_id=51430&x_language_code=en-US",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=3012&x_source_flag=&x_style_id=&x_proposal_type_id=51430&x_invitation_id=",
+    "opportunity_evidence": [],
+    "gemini_summary": "A registration page for AstraZeneca's grant application portal. It does not announce any specific funding opportunities, including those in oncology or neurology."
+  },
+  "astrazeneca|https://www.cybergrants.com/pls/cybergrants/ao_support_area.display_support_area?x_gm_id=3012&x_source_flag=&x_style_id=&x_proposal_type_id=51430&x_language_code=en-us&x_popup=y": {
+    "fingerprint": "b1cc9a8c3ebe07cc7ab4158dcad45178e1113803982975227df4b0aa51ba77b7",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/ao_support_area.display_support_area?x_gm_id=3012&x_source_flag=&x_style_id=&x_proposal_type_id=51430&x_language_code=en-US&x_popup=Y",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/ao_support.support?x_gm_id=3012&x_source_flag=&x_style_id=&x_proposal_type_id=51430&x_language_code=en-US&x_popup=Y",
+    "opportunity_evidence": [],
+    "gemini_summary": "An FAQ page for AstraZeneca's generic grant application system. While it confirms the company funds grants, it does not describe any specific oncology or neurology funding opportunities."
+  },
+  "astrazeneca|https://www.cybergrants.com/pls/cybergrants/acct_reset.init_reset_request?x_user_type=n&x_gm_id=3012&x_source_flag=&x_style_id=&x_pt_id=51430&x_invitation_id=&x_language_code=en-us": {
+    "fingerprint": "e03cc84fcd0bb1af2265c844ee0ab25698993a270c34510f8b48a50e2cb62609",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/acct_reset.init_reset_request?x_user_type=N&x_gm_id=3012&x_source_flag=&x_style_id=&x_pt_id=51430&x_invitation_id=&x_language_code=en-US",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=3012&x_source_flag=&x_style_id=&x_proposal_type_id=51430&x_invitation_id=",
+    "opportunity_evidence": [],
+    "gemini_summary": "A password reset page for AstraZeneca's grant portal. It does not contain any information about funding opportunities."
+  },
+  "merck|http://msdimegrants.com/": {
+    "fingerprint": "84055d84521f0947b324e991b9ffbbff160e76a090174047209035eb15f03ae2",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://msdimegrants.com:443/",
+    "application_url": "http://www.msdgrant.com",
+    "opportunity_evidence": [],
+    "gemini_summary": "Merck's IME Grant Portal outlines its Independent Medical Education grant program for Healthcare Professionals, mentioning application procedures, temporary closure dates, and a contact email. It refers to 'Requests for Proposals (RFPs)'. This program does not specify oncology or neurology as target therapeutic areas on this page, making it irrelevant based on the provided instructions."
+  },
+  "merck|https://uspagrants.com/uspa-entry": {
+    "fingerprint": "d279703a19c356b4e2665ee942ee609c6af571755d8caa53ca32aa899703a147",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://uspagrants.com/uspa-entry",
+    "application_url": "https://uspagrants.com/",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page is a gateway to a grant portal, not an announcement for a new RFP or funding opportunity. It includes cookie consent and a redirect notice."
+  },
+  "bristol myers squibb|https://www.cybergrants.com/pls/cybergrants/gs_reg.redirect?x_gm_id=5084&x_source_flag=&x_style_id=&x_proposal_type_id=58720&x_invitation_id=&x_language_code=en-us": {
+    "fingerprint": "d3cc795f00808b3b961c3de760cb9039b86720fbce67afe37c213086328d8975",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/ao_reg.register?x_gm_id=5084&x_proposal_type_id=58720&x_language_code=en-US",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/ao_login.login?x_gm_id=5084&x_source_flag=&x_style_id=&x_proposal_type_id=58720&x_invitation_id=",
+    "opportunity_evidence": [],
+    "gemini_summary": "This is a registration page for an application system, not an announcement of a specific RFP or funding opportunity. No mention of oncology or neurology."
+  },
+  "bristol myers squibb|https://www.cybergrants.com/pls/cybergrants/ao_support_area.display_support_area?x_gm_id=5084&x_source_flag=&x_style_id=&x_proposal_type_id=58720&x_language_code=en-us&x_popup=y": {
+    "fingerprint": "84cccd09060678a6dc92e149fbf3a6caf550992601e2358e66554f32adcbd876",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": false,
+    "final_url": "https://www.cybergrants.com/pls/cybergrants/ao_support_area.display_support_area?x_gm_id=5084&x_source_flag=&x_style_id=&x_proposal_type_id=58720&x_language_code=en-US&x_popup=Y",
+    "application_url": "https://www.cybergrants.com/pls/cybergrants/ao_support.support?x_gm_id=5084&x_source_flag=&x_style_id=&x_proposal_type_id=58720&x_language_code=en-US&x_popup=Y",
+    "opportunity_evidence": [],
+    "gemini_summary": "This page provides support and FAQ for using an application system, rather than announcing a new RFP or funding opportunity. It describes how to manage existing applications."
+  },
+  "kura oncology|https://www.kuraoncology.com/grants-funding": {
+    "fingerprint": "9c0ea4b681903d64312a2bb15c25dc7b761cf09e96782eab0f9a795c27902804",
+    "checked_at": "2026-11-23T14:49:22+05:30",
+    "flag": false,
+    "final_url": "https://kuraoncology.com/grants-funding/",
+    "application_url": "https://kuraoncology.com/grants-funding/",
+    "opportunity_evidence": []
+  },
+  "rigel pharmaceuticals|https://www.rigel.com/pipeline/independent-medical-education": {
+    "fingerprint": "b9edbb5d5f27781383ca3490e0ad883c2c5aadd788f6128c9a7c24e41d522e06",
+    "checked_at": "2026-11-24T08:55:44+05:30",
+    "flag": true,
+    "final_url": "https://www.rigel.com/pipeline/independent-medical-education",
+    "application_url": "https://d1io3yog0oux5.cloudfront.net/_15c7e0d5f74b351f924ccf83b3986c0e/rigel/db/830/7508/description/Rigel_IME_RFP_October_2026.pdf",
+    "opportunity_evidence": [
+      "Rigel is currently accepting IME grant proposals for educational activities, including medical education meetings, conferences, symposia, medical center grand rounds, enduring medical education programs, and similar educational activities in healthcare settings."
+    ]
+  }
+}
