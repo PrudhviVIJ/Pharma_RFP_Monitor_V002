@@ -1,9 +1,6 @@
 name: Daily Pharma RFP Monitor
 
 on:
-  schedule:
-    - cron: "0 20 * * *"
-      timezone: "Asia/Kolkata"
   workflow_dispatch:
     inputs:
       reset_database:
