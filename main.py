@@ -59,7 +59,7 @@ STATE_FILE = OUTPUT_DIR / "monitor_state.json"
 MATCHES_FILE = OUTPUT_DIR / "rfp_grant_matches.csv"
 RUN_REPORT = OUTPUT_DIR / "last_run_report.csv"
 ALERT_REPORT = OUTPUT_DIR / "last_alert_candidates.csv"
-DAILY_RUN_LOG = OUTPUT_DIR / "daily_run_log.csv"
+DAILY_RUN_LOG_DIR = OUTPUT_DIR / "daily_run_logs"
 MARKDOWN_REPORT = OUTPUT_DIR / "opportunities.md"
 REPORT_COLUMNS = [
     "company", "source_url", "final_url", "discovered_from", "http_status",
@@ -761,12 +761,19 @@ def save_state(state):
     atomic_write_json(STATE_FILE, state)
 
 def append_daily_run_log(rows):
-    """Append one finding/alert decision per checked URL to the daily CSV history."""
+    """Append findings to the CSV for the monitor's local calendar day."""
     if not rows:
         return
-    DAILY_RUN_LOG.parent.mkdir(parents=True, exist_ok=True)
-    exists = DAILY_RUN_LOG.exists() and DAILY_RUN_LOG.stat().st_size > 0
-    with DAILY_RUN_LOG.open("a", newline="", encoding="utf-8-sig") as handle:
+    run_date = str(rows[0].get("run_date", ""))
+    try:
+        day = datetime.strptime(run_date, "%d/%m/%y")
+    except ValueError:
+        day = datetime.now(MONITOR_TIMEZONE)
+    # Slashes are invalid in Windows filenames; the CSV field remains DD/MM/YY.
+    daily_log = DAILY_RUN_LOG_DIR / f"{day.strftime('%d-%m-%y')}.csv"
+    DAILY_RUN_LOG_DIR.mkdir(parents=True, exist_ok=True)
+    exists = daily_log.exists() and daily_log.stat().st_size > 0
+    with daily_log.open("a", newline="", encoding="utf-8-sig") as handle:
         writer = csv.DictWriter(handle, fieldnames=DAILY_RUN_LOG_COLUMNS, extrasaction="ignore")
         if not exists:
             writer.writeheader()
@@ -774,6 +781,7 @@ def append_daily_run_log(rows):
             writer.writerow({field: row.get(field, "") for field in DAILY_RUN_LOG_COLUMNS})
         handle.flush()
         os.fsync(handle.fileno())
+    return daily_log
 
 def build_daily_run_log_rows(results, alerts, *, args, email_result, email_error, email_sent):
     """Explain the finding and final alert decision for every checked record."""
@@ -1668,11 +1676,11 @@ def main():
         persist_output_files(OUTPUT_DIR, RUN_ID)
     except Exception:
         logging.exception("PostgreSQL output-file persistence failed; local output files remain available.")
-    append_daily_run_log(build_daily_run_log_rows(
+    daily_log = append_daily_run_log(build_daily_run_log_rows(
         results, alerts, args=args, email_result=email_result,
         email_error=email_error, email_sent=email_sent,
     ))
-    logging.info("Daily run log: %s", DAILY_RUN_LOG)
+    logging.info("Daily run log: %s", daily_log)
     logging.info("Finished. Flagged this run: %d; positive-change alerts: %d", sum(r["flag"] for r in results), len(alerts))
     logging.info("Run report: %s", RUN_REPORT)
     logging.info("Current flagged matches: %s", MATCHES_FILE)
