@@ -47,6 +47,7 @@ jobs:
           path: |
             output/monitor_state.json
             output/.monitor-state-cache-v3
+            output/daily_run_log.csv
           key: pharma-rfp-monitor-state-v3-${{ github.ref_name }}-${{ github.run_id }}
           restore-keys: |
             pharma-rfp-monitor-state-v3-${{ github.ref_name }}-
@@ -300,6 +301,7 @@ jobs:
           path: |
             output/monitor_state.json
             output/.monitor-state-cache-v3
+            output/daily_run_log.csv
           key: pharma-rfp-monitor-state-v3-${{ github.ref_name }}-${{ github.run_id }}
 
       # 11. Upload logs and reports even when earlier steps fail
@@ -316,5 +318,6 @@ jobs:
             output/rfp_grant_matches.csv
             output/health.json
             output/opportunities.md
+            output/daily_run_log.csv
           if-no-files-found: ignore
           retention-days: 30

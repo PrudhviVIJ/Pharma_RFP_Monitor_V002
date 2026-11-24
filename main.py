@@ -59,6 +59,7 @@ STATE_FILE = OUTPUT_DIR / "monitor_state.json"
 MATCHES_FILE = OUTPUT_DIR / "rfp_grant_matches.csv"
 RUN_REPORT = OUTPUT_DIR / "last_run_report.csv"
 ALERT_REPORT = OUTPUT_DIR / "last_alert_candidates.csv"
+DAILY_RUN_LOG = OUTPUT_DIR / "daily_run_log.csv"
 MARKDOWN_REPORT = OUTPUT_DIR / "opportunities.md"
 REPORT_COLUMNS = [
     "company", "source_url", "final_url", "discovered_from", "http_status",
@@ -71,6 +72,13 @@ REPORT_COLUMNS = [
     "changed_fields", "flag", "gemini_relevance", "gemini_confidence",
     "gemini_summary", "document_status", "confidence_score", "verification_reason",
     "email_eligible", "email_block_reason", "access_issue", "checked_at", "error",
+]
+DAILY_RUN_LOG_COLUMNS = [
+    "run_date", "run_id", "checked_at", "company", "source_url", "final_url",
+    "page_title", "opportunity_type", "opportunity_title", "opportunity_status",
+    "target_topics", "deadline_date", "deadline_text", "change_type", "finding_status",
+    "finding_reason", "alert_status", "alert_reason", "alert_sent_at", "email_configured",
+    "email_attempted", "http_status", "extraction_method", "evidence", "error",
 ]
 
 # Tune these lists to reduce or increase alert sensitivity.
@@ -751,6 +759,99 @@ def get_state():
 
 def save_state(state):
     atomic_write_json(STATE_FILE, state)
+
+def append_daily_run_log(rows):
+    """Append one finding/alert decision per checked URL to the daily CSV history."""
+    if not rows:
+        return
+    DAILY_RUN_LOG.parent.mkdir(parents=True, exist_ok=True)
+    exists = DAILY_RUN_LOG.exists() and DAILY_RUN_LOG.stat().st_size > 0
+    with DAILY_RUN_LOG.open("a", newline="", encoding="utf-8-sig") as handle:
+        writer = csv.DictWriter(handle, fieldnames=DAILY_RUN_LOG_COLUMNS, extrasaction="ignore")
+        if not exists:
+            writer.writeheader()
+        for row in rows:
+            writer.writerow({field: row.get(field, "") for field in DAILY_RUN_LOG_COLUMNS})
+        handle.flush()
+        os.fsync(handle.fileno())
+
+def build_daily_run_log_rows(results, alerts, *, args, email_result, email_error, email_sent):
+    """Explain the finding and final alert decision for every checked record."""
+    local_now = datetime.now(MONITOR_TIMEZONE)
+    run_date = local_now.strftime("%d/%m/%y")
+    checked_at = local_now.strftime("%d/%m/%y %H:%M:%S")
+    sent_at = checked_at if email_sent else ""
+    alert_keys = {
+        (str(alert.get("company", "")).casefold(), str(alert.get("source_url", "")).casefold())
+        for alert in alerts
+    }
+    email_configured = bool(
+        os.getenv("SMTP_HOST", "").strip()
+        and os.getenv("ALERT_FROM", "").strip()
+        and os.getenv("ALERT_TO", "").strip()
+    )
+    rows = []
+    for result in results:
+        key = (str(result.get("company", "")).casefold(), str(result.get("source_url", "")).casefold())
+        if result.get("error") or int(result.get("http_status") or 0) >= 400:
+            finding_status = "FAILED"
+            finding_reason = result.get("error") or f"HTTP status {result.get('http_status')}"
+        elif result.get("is_target_rfp"):
+            finding_status = "TARGET_RFP"
+            finding_reason = "Verified oncology/neurology RFP or proposal finding"
+        elif result.get("flag"):
+            finding_status = "FUNDING_FINDING"
+            finding_reason = "Funding-related finding did not meet target RFP criteria"
+        else:
+            finding_status = "NO_TARGET_FINDING"
+            finding_reason = "No verified target oncology/neurology RFP finding"
+
+        if key in alert_keys and email_sent:
+            alert_status, alert_reason = "SENT", "Email delivered successfully"
+        elif args.baseline:
+            alert_status, alert_reason = "NOT_SENT", "Baseline mode"
+        elif result.get("error") or int(result.get("http_status") or 0) >= 400:
+            alert_status, alert_reason = "NOT_SENT", "Page check failed"
+        elif not result.get("is_target_rfp"):
+            alert_status, alert_reason = "NOT_SENT", "Not a verified target RFP"
+        elif result.get("email_eligible") != "Yes":
+            alert_status, alert_reason = "NOT_SENT", result.get("email_block_reason") or "Email eligibility failed"
+        elif deadline_is_too_soon(result):
+            alert_status, alert_reason = "NOT_SENT", "Expired or within minimum lead time"
+        elif email_url_block_reason(result.get("application_url") or result.get("final_url") or result.get("source_url")):
+            alert_status, alert_reason = "NOT_SENT", "Application URL blocked"
+        elif result.get("access_issue"):
+            alert_status, alert_reason = "NOT_SENT", "Source access issue"
+        elif result.get("change_type") == "UNCHANGED" and not args.force_alert:
+            alert_status, alert_reason = "NOT_SENT", "No new or changed evidence"
+        elif key in alert_keys and email_error:
+            alert_status, alert_reason = "NOT_SENT", f"Email delivery failed: {email_error}"
+        elif key in alert_keys and email_result is None:
+            alert_status, alert_reason = "NOT_SENT", "Email not configured"
+        else:
+            alert_status, alert_reason = "NOT_SENT", "Did not pass final alert filters"
+
+        rows.append({
+            "run_date": run_date, "run_id": RUN_ID, "checked_at": checked_at,
+            "company": result.get("company", ""), "source_url": result.get("source_url", ""),
+            "final_url": result.get("final_url", ""), "page_title": result.get("page_title", ""),
+            "opportunity_type": result.get("opportunity_type", ""),
+            "opportunity_title": result.get("opportunity_title", ""),
+            "opportunity_status": result.get("opportunity_status", ""),
+            "target_topics": result.get("target_topics", ""),
+            "deadline_date": result.get("deadline_date", ""),
+            "deadline_text": result.get("deadline_text", ""),
+            "change_type": result.get("change_type", ""),
+            "finding_status": finding_status, "finding_reason": finding_reason,
+            "alert_status": alert_status, "alert_reason": alert_reason,
+            "alert_sent_at": sent_at if key in alert_keys and email_sent else "",
+            "email_configured": "Yes" if email_configured else "No",
+            "email_attempted": "Yes" if email_result is not None else "No",
+            "http_status": result.get("http_status", ""),
+            "extraction_method": result.get("extraction_method", ""),
+            "evidence": result.get("evidence", ""), "error": result.get("error", ""),
+        })
+    return rows
 
 def sync_google_sheet(csv_path):
     """Replace the configured worksheet contents with the cumulative matches CSV."""
@@ -1535,6 +1636,8 @@ def main():
 
     state_saved = not alerts or args.baseline
     email_sent = False
+    email_result = None
+    email_error = ""
     if alerts and not args.baseline:
         try:
             email_result = send_email_alert(alerts)
@@ -1544,6 +1647,7 @@ def main():
             # failure remains False and is retried on the next run.
             state_saved = email_result is not False
         except Exception:
+            email_error = "SMTP delivery failed"
             logging.exception("Email notification failed; see CSV output for matches.")
             state_saved = False
     if email_sent:
@@ -1564,6 +1668,11 @@ def main():
         persist_output_files(OUTPUT_DIR, RUN_ID)
     except Exception:
         logging.exception("PostgreSQL output-file persistence failed; local output files remain available.")
+    append_daily_run_log(build_daily_run_log_rows(
+        results, alerts, args=args, email_result=email_result,
+        email_error=email_error, email_sent=email_sent,
+    ))
+    logging.info("Daily run log: %s", DAILY_RUN_LOG)
     logging.info("Finished. Flagged this run: %d; positive-change alerts: %d", sum(r["flag"] for r in results), len(alerts))
     logging.info("Run report: %s", RUN_REPORT)
     logging.info("Current flagged matches: %s", MATCHES_FILE)
