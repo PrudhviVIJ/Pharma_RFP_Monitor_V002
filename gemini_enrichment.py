@@ -143,14 +143,19 @@ class GeminiEnricher:
         if json_response:
             options["response_mime_type"] = "application/json"
         thinking_type = getattr(self._types, "ThinkingConfig", None)
-        if thinking_type and self.thinking_budget > 0:
-            try:
-                options["thinking_config"] = thinking_type(thinking_budget=self.thinking_budget)
-            except Exception as exc:
-                # SDK versions differ in the ThinkingConfig field name and
-                # validation rules. Search grounding/review remains usable
-                # without an optional thinking budget.
-                LOGGER.warning("Gemini thinking configuration unavailable; continuing without it: %s", exc)
+        if thinking_type:
+            # SDK releases expose different controls. Older releases support
+            # thought summaries via include_thoughts; newer releases may also
+            # expose thinking_budget or thinking_level. Use only fields that
+            # the installed SDK actually declares.
+            thinking_fields = getattr(thinking_type, "model_fields", {})
+            thinking_options = {}
+            if "include_thoughts" in thinking_fields:
+                thinking_options["include_thoughts"] = True
+            if "thinking_budget" in thinking_fields and self.thinking_budget > 0:
+                thinking_options["thinking_budget"] = self.thinking_budget
+            if thinking_options:
+                options["thinking_config"] = thinking_type(**thinking_options)
         try:
             return self._types.GenerateContentConfig(**options)
         except Exception:
