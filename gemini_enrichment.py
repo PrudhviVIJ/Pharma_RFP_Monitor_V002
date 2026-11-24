@@ -20,6 +20,20 @@ from bs4 import BeautifulSoup
 
 LOGGER = logging.getLogger(__name__)
 
+TARGET_TOPIC_TERMS = (
+    "oncology", "cancer", "tumor", "tumour", "hematology", "haematology",
+    "immuno-oncology", "precision oncology", "breast cancer", "lung cancer",
+    "colorectal cancer", "prostate cancer", "pancreatic cancer", "ovarian cancer",
+    "lymphoma", "leukemia", "leukaemia", "multiple myeloma", "solid tumor",
+    "solid tumour", "tumor microenvironment", "car t", "neuroscience", "neurology",
+    "neurologic", "neurological", "parkinson", "migraine", "epilepsy",
+    "multiple sclerosis", "alzheimer", "dementia", "neurodegenerative", "brain",
+    "stroke", "cerebrovascular", "movement disorder", "seizure", "headache",
+    "neuromuscular", "neuroimmunology", "motor neuron disease",
+    "amyotrophic lateral sclerosis", "spinal muscular atrophy", "huntington's disease",
+    "neuropathy", "cognitive impairment",
+)
+
 FUNDING_TERMS = (
     "request for proposal", "rfp", "call for proposal", "ccp",
     "call for concept proposal", "independent medical education", "ime",
@@ -108,7 +122,10 @@ class GeminiEnricher:
         if not api_key:
             raise RuntimeError("GEMINI_API_KEY is not set")
         try:
-            from google import genai
+            # Import the concrete submodule directly.  Some runners have a
+            # namespace-only ``google`` package, for which ``from google
+            # import genai`` can fail even when google-genai is installed.
+            import google.genai as genai
             from google.genai import types
         except ImportError as exc:
             raise RuntimeError(
@@ -150,7 +167,7 @@ class GeminiEnricher:
         terms = "; ".join(FUNDING_TERMS)
         prompt = f"""
 Find additional pharmaceutical or biotechnology companies, excluding: {excluded},
-that have public announcements matching these funding terms: {terms}.
+that have public oncology or neurology announcements matching these funding terms: {terms}.
 Run several focused searches, including exact-phrase searches and combinations
 with terms such as deadline, applications, medical affairs, grants, fellowship,
 and funding. Search company domains and authoritative external grant portals.
@@ -161,6 +178,10 @@ Return only JSON in this format:
 Rules:
 - Include a result only when at least one approved term appears in the announcement
   content and clearly refers to an actual funding/proposal opportunity.
+- Require explicit oncology or neurology relevance. Relevant topic examples:
+  {"; ".join(TARGET_TOPIC_TERMS)}.
+- Require explicit RFP/proposal/call-for-proposals language; do not return a
+  generic grant or donations program without a specific RFP opportunity.
 - Exclude incidental keyword mentions, generic program pages, forms, templates,
   policy documents, login pages, and unrelated documents.
 - Use current public web information and prefer the original company or
@@ -259,8 +280,9 @@ Rules:
                     "scraped_text": text_by_key.get(key, "")[:20000],
                 })
             prompt = f"""
-Review these scraped public pharma/biotech pages only for announcements that
-contain one or more of these approved terms: {"; ".join(FUNDING_TERMS)}.
+Review these scraped public pharma/biotech pages only for oncology or neurology
+RFP/proposal announcements containing one or more of these approved terms:
+{"; ".join(FUNDING_TERMS)}.
 Determine whether each occurrence is actually part of a funding/proposal
 announcement, or merely a navigation label, policy, form, portal, contact
 address, or unrelated mention. Identify details that deterministic keyword
@@ -270,12 +292,14 @@ Return only JSON in this format:
 {{"records": [{{
   "source_url": "",
   "relevant": false,
+  "is_target_rfp": false,
   "confidence": "low|medium|high",
   "opportunity_title": "",
   "opportunity_status": "OPEN|CLOSED|UNKNOWN",
   "sponsor": "",
   "sponsor_type": "pharmaceutical|biotechnology|foundation|government|academic|other|unknown",
   "therapeutic_areas": [],
+  "target_topics": [],
   "focus": "",
   "published_date_text": "",
   "deadline_text": "",
@@ -300,7 +324,9 @@ Rules:
 - Return evidence_quote as one short exact quote copied from the supplied scraped text.
 - Do not paraphrase evidence_quote and do not include facts from outside the supplied text.
 - Set relevant=true only when an approved term appears in announcement context
-  and the page describes an actual opportunity, request, application, or call.
+  and the page describes an actual oncology or neurology RFP/proposal opportunity.
+- Set is_target_rfp=true only when both target-topic evidence and explicit RFP,
+  request-for-proposals, or call-for-proposals language are present.
 - Set relevant=false for incidental mentions, generic program descriptions,
   blank forms, templates, policy documents, tax documents, and login pages.
 - Do not treat a URL filename alone as evidence.
@@ -416,7 +442,7 @@ def merge_enrichment(result: dict[str, Any], update: dict[str, Any]) -> None:
         value = str(update.get(field, "")).strip()
         if value and (field != "application_url" or _is_http_url(value)):
             result[field] = value
-    for field in ("therapeutic_areas", "geography"):
+    for field in ("therapeutic_areas", "target_topics", "geography"):
         values = update.get(field) or []
         if isinstance(values, list):
             result[field] = "; ".join(dict.fromkeys(str(value).strip() for value in values if str(value).strip()))
